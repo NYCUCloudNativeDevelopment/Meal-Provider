@@ -134,12 +134,12 @@
                     </div>
                   </td>
                 </tr>
-                <tr v-for="order in orders" class="h-16 rounded border border-gray-300 focus:outline-none">
-                  <td class="pl-4">index</td>
+                <tr v-for="order, index in orders" class="h-16 rounded border border-gray-300 focus:outline-none">
+                  <td class="pl-4">{{ index + 1 }}</td>
                   <td class="pl-5">
                     <div class="flex items-center">
                       <p class="mr-2 text-base font-medium leading-none text-gray-700">
-                        {{ order.restaurant_id }}
+                        {{ order.restaurant_name }}
                       </p>
                     </div>
                   </td>
@@ -167,6 +167,7 @@
 
                   <td>
                     <button
+                      @click="openDialog(index)"
                       class="rounded bg-gray-100 px-5 py-3 text-sm leading-none text-gray-600 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-red-300 focus:ring-offset-2"
                     >
                       rate order
@@ -276,15 +277,16 @@ const getHistortOrder = async () => {
   console.log(orders.value)
 }
 
-const test = () => {
-  showDialog.value = true
+const openDialog = (index: number) => {
+  selectIndex.value = index
+  showDialog.value = true 
 }
 
-const submitReview = () => {
+const submitReview = async () => {
   const orderID = orders.value[selectIndex.value].order_id
-  workerService.reviewOrder(userInfo.value.outh_token, orderID, overAllRating.value, orders.value[selectIndex.value])
-  console.log(selectIndex.value)
-  console.log(overAllRating.value)
+  await workerService.reviewOrder(userInfo.value.outh_token, orderID, overAllRating.value, orders.value[selectIndex.value])
+  await getHistortOrder()
+  console.log(orders.value)
   showDialog.value = false
 }
 </script>
