@@ -37,7 +37,6 @@ def get_order():
         .filter(Orders.OrderTime >= today) \
         .filter(Orders.OrderTime <= datetime.now()).all()
     order_list = []
-    # TODO: add number of dishes in each order
     for order in orders:
         order_id = order[0].OrderID
         dishes = db.session.query(Order_Dish, Dish_Info) \
