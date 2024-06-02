@@ -1,5 +1,6 @@
 import pytest
 from controller.user_auth import generate_token
+from model.models import Orders, Order_Dish, db
 from datetime import datetime
 
 @pytest.mark.parametrize(
@@ -133,4 +134,41 @@ def test_POS_get_only_todays_order(client, restaurant_id):
         order_time = datetime.strptime(order['order_time'], "%Y-%m-%d %H:%M:%S")
         assert start <= order_time
         assert order_time <= end
-    
+
+def test_POS_add_order(client, session):
+    restaurant_token = generate_token(100003, 'restaurant_2')
+    response = client.post('/pos/add_order', headers={'Authorization': f'Bearer {restaurant_token}'}, json={
+        "customer_id": 100003,
+        "total_price": 430,
+        "dishes": [
+            {
+                "dish_id": 5,
+                "number": 3
+            }, {
+                "dish_id": 7,
+                "number": 2
+            }
+        ]
+    })
+    assert response.status_code == 200
+    assert response.json['status'] == "success"
+    assert "order_id" in response.json
+    order_id = response.json['order_id']
+    order = session.query(Orders).filter_by(OrderID=order_id).first()
+    assert order is not None
+    assert order.RestaurantID == 2
+    assert order.CustomerID == 100003
+    assert order.TotalPrice == 430
+    assert order.OrderTime is not None
+    assert order.Finish == False
+    assert order.Reviewed == False
+
+    ordered_dishes = session.query(Order_Dish).filter_by(OrderID=order_id).all()
+    assert len(ordered_dishes) == 2
+    for dish in ordered_dishes:
+        assert dish.OrderID == order_id
+        assert dish.DishID in [5, 7]
+        if dish.DishID == 5:
+            assert dish.Number == 3
+        else:
+            assert dish.Number == 2
