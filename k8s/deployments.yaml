@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: gcr.io/meal-provider-team12/frontend:latest
+        image: ghcr.io/benson0402/meal-provider/frontend:latest
         ports:
         - containerPort: 3000
 ---
@@ -36,7 +36,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: gcr.io/meal-provider-team12/backend:latest
+        image: ghcr.io/benson0402/meal-provider/backend:latest
         ports:
         - containerPort: 5000
         env:
