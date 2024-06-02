@@ -110,3 +110,12 @@ def get_worker_info(id):
         'staff_name': worker.StaffName,
         'phone': worker.PhoneNumber
     })
+
+@jwt_required()
+def check_paid(customer_id):
+    if not check_permission('restaurant'):
+        return jsonify({'error': 'Permission Denied'}), 403
+    staff = Staff_Info.query.filter_by(StaffID=customer_id).first()
+    if not staff:
+        return jsonify({'error': 'Invalid Customer ID'}), 404
+    return jsonify({'customer_id': staff.StaffID, 'paid': staff.Paid})

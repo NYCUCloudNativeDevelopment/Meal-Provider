@@ -6,6 +6,7 @@
     - view order
     - add order
     - finish order
+    - check if the worker has paid
 - main page (for worker)
     - get metadata of all restaurant
     - get info of a single restaurant
@@ -152,7 +153,16 @@
     "phone": 
 }
 ```
-
+### check if the worker has paid
+- endpoint: `/pos/paid/<customer_id>`
+- method: GET
+- response
+```
+{
+    "customer_id": ,
+    "paid": true|false
+}
+```
 
 ## main page (for worker)
 ### get list of restaurants
