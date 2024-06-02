@@ -88,15 +88,16 @@ run this in ./backend/
 - response
 ```
 {
-    "order": 
+    "orders": 
     [
         {
             "order_id": ,
             "customer_id": ,
-            "custumer_name": ,
+            "customer_name": ,
+            "price": ,
             "order_time": "YYYY-MM-DD HH:MM:SS",
             "finish": ,
-            "order_dish":
+            "dishes":
             [
                 {
                     "dish_id": ,
