@@ -1,6 +1,27 @@
 version: '3.1'
 
 services:
+    
+  traefik:
+    # The official v3 Traefik docker image
+    image: traefik:v3.0
+    # Enables the web UI and tells Traefik to listen to docker
+    command:
+      - '--api.insecure=true'
+      - '--providers.docker'
+      - '--metrics.prometheus=true'
+      - '--entryPoints.http.address=:80'
+      - '--entryPoints.http.asDefault=true'
+      - '--entryPoints.metrics.address=:8082'
+      - '--metrics.prometheus.entryPoint=metrics'
+    ports:
+      # The HTTP port
+      - "80:80"
+      # The Web UI (enabled by --api.insecure=true)
+      - "8888:8080"
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
 
   frontend:
     build: ./frontend
@@ -8,6 +29,9 @@ services:
       - "3000:3000"
     depends_on:
       - backend
+    labels:
+      - "traefik.http.routers.frontend.rule=PathPrefix(`/`)"
+      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
 
   backend:
     build: ./backend
@@ -17,6 +41,11 @@ services:
       - db
     environment:
       DATABASE_URL: mysql://user:password@db:3306/mydatabase
+    labels:
+      - "traefik.http.routers.backend.rule=PathPrefix(`/api`)"
+      - "traefik.http.routers.backend.middlewares=api-rewrite"
+      - "traefik.http.middlewares.api-rewrite.stripprefix.prefixes=/api"
+      - "traefik.http.services.backend.loadbalancer.server.port=5000"
 
   db:
     image: mysql:latest
@@ -39,6 +68,29 @@ services:
     restart: always
     ports:
       - 8080:8080
+  
+  prometheus:
+    image: prom/prometheus:v2.52.0
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    depends_on:
+      - traefik
+  
+  grafana:
+    image: grafana/grafana:9.3.1
+    container_name: grafana
+    volumes:
+      - ./grafana_data:/var/lib/grafana
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: pass
+    depends_on:
+      - prometheus
+    ports:
+      - '3030:3000'
 
 volumes:
   db-data:
