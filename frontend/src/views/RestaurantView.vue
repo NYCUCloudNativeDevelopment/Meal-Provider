@@ -1,6 +1,7 @@
 <template>
   <!-- component -->
-  <successDialog v-if="showDialog" @close="close()" message="Yo have success submit the order"></successDialog>
+  <successDialog v-if="showSuccessDialog" @close="closeSuccessDialog()" message="訂單已經成功送出去"></successDialog>
+  <ErrorDialog v-if="showErrorDialog" @close="closeErrorDialog()" message="訂單不能是空的"></ErrorDialog>
   <div class="mx-auto bg-white">
     <div class="flex flex-col-reverse lg:flex-row">
       <RestaurantSidebar class="min-h-screen w-full justify-start shadow-lg lg:w-1/6"></RestaurantSidebar>
@@ -200,15 +201,6 @@
             Submit Order
           </div>
         </div>
-        <div class="mt-5 px-5">
-          <div
-            style="cursor: pointer"
-            @click="test()"
-            class="rounded-md bg-yellow-500 px-4 py-4 text-center font-semibold text-white shadow-lg hover:bg-transparent hover:text-indigo-600"
-          >
-            Submit Order
-          </div>
-        </div>
         <!-- end button pay -->
       </div>
       <!-- end right section -->
@@ -241,7 +233,8 @@ const submitOrder = reactive<chart>({
   dishes: []
 })
 const price = ref(0)
-const showDialog = ref(false)
+const showSuccessDialog = ref(false)
+const showErrorDialog = ref(false)
 
 onMounted(async () => {
   const OuthResult = await userService.userCheckOuth()
@@ -270,6 +263,10 @@ const showName = (meal: meal) => {
 }
 
 const submitUserOrder = () => {
+  if (userOrder.length === 0) {
+    openErrorDialog()
+    return
+  }
   submitOrder.total_price = price.value
   for (let i = 0; i < userOrder.length; i++) {
     submitOrder.dishes.push({
@@ -277,11 +274,11 @@ const submitUserOrder = () => {
       number: userOrder[i].number
     })
   }
-  console.log(submitOrder)
   restaurantService.addOrder(userInfo.value.outh_token, submitOrder)
   submitOrder.dishes.splice(0, submitOrder.dishes.length)
   userOrder.splice(0, userOrder.length)
   price.value = 0
+  openSuccessDialog()
 }
 
 const decreaseNumber = (index: number) => {
@@ -303,11 +300,19 @@ const clearAllMeal = () => {
   price.value = 0
 }
 
-const test = () => {
-  showDialog.value = true
+const openErrorDialog = () => {
+  showErrorDialog.value = true
 }
 
-const close = () => {
-  showDialog.value = false
+const openSuccessDialog = () => {
+  showSuccessDialog.value = true
+}
+
+const closeErrorDialog = () => {
+  showErrorDialog.value = false
+}
+
+const closeSuccessDialog = () => {
+  showSuccessDialog.value = false
 }
 </script>

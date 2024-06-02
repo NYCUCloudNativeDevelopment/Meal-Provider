@@ -38,6 +38,7 @@ interface order {
   finished: boolean
   reviewed: boolean
   overall_rating: number
+  restaurant_name: string
   dishes: dish[]
 }
 

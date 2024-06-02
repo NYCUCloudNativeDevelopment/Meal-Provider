@@ -25,20 +25,16 @@ interface restaurant {
 }
 
 interface order {
-  customer_id: number,
   order_id: number
+  customer_id: number
+  customer_name: string
   order_time: string
-  restaurant_id: number
+  finish: boolean
   price: number
-  finished: boolean
-  reviewed: number
-  overall_rating: number
-  dishes: {
+  order_dish: {
     dish_id: number
     dish_name: string
-    number: number
     price: number
-    rating: number
   }[]
 }
 
