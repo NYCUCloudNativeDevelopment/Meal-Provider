@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from model.models import Staff_Info
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from controller.user_auth import generate_token
 from datetime import datetime
 
 NOTIFY_DATE = 5
@@ -11,7 +11,7 @@ def login():
     staff = Staff_Info.query.filter_by(Gmail=account, Password=password).first()
     if staff is None:
         return jsonify({'outh_token': "", 'user_identity': "invalid_user"})
-    access_token = create_access_token(identity=staff.StaffID, additional_claims={'position': staff.Position})
+    access_token = generate_token(staff.StaffID, staff.Position)
     
     today = datetime.now().day
     notify = False

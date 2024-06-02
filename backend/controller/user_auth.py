@@ -1,4 +1,4 @@
-from flask_jwt_extended import get_jwt, get_jwt_identity
+from flask_jwt_extended import get_jwt, get_jwt_identity, create_access_token
 
 def check_permission(target_permission):
     jwt = get_jwt()
@@ -25,3 +25,6 @@ def get_restaurant_id():
 
 def get_user_id():
     return get_jwt_identity()
+
+def generate_token(user_account, user_type):
+    return create_access_token(identity=user_account, additional_claims={'position': user_type})
