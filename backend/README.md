@@ -1,4 +1,7 @@
 # API Document
+## testing (with coverage report)
+run this in ./backend/
+`pytest --collect-only tests/ --cov-report html:coverage.html --cov=./`
 ## Summary
 - login
 - POS Page
@@ -97,6 +100,7 @@
             [
                 {
                     "dish_id": ,
+                    "number": ,
                     "dish_name": ,
                     "number": ,
                     "price": 
