@@ -106,8 +106,8 @@ def get_worker_info(id):
     if not worker:
         return jsonify({'error': 'Worker not found'}), 404
     return jsonify({
-        'staff_id': worker.StaffID,
-        'staff_name': worker.StaffName,
+        'id': worker.StaffID,
+        'name': worker.StaffName,
         'phone': worker.PhoneNumber
     })
 
