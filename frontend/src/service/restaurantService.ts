@@ -68,7 +68,7 @@ export default class restaurantService {
     return data.orders
   }
   static async finishOrder(token: string, order_id: number): Promise<void> {
-    const response = await fetch(`/finish/${order_id}`, {
+    const response = await fetch(`/api/pos/finish/${order_id}`, {
       method: 'POST',
       headers: {
         Authorization: 'Bearer ' + token

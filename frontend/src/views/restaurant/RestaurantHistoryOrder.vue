@@ -1,5 +1,6 @@
 <template>
   <!-- component -->
+  <successDialog v-if="showDialog" @close="close()" message="Yo have finish these order"></successDialog>
   <!-- <successDialog restaurant"showDialog" @close="close()" message="Yo have success submit the order"></successDialog> -->
   <div class="mx-auto bg-white">
     <!-- component -->
@@ -46,10 +47,11 @@
               </a>           
             </div>
             <button
-              onclick="popuphandler(true)"
+              v-if="finishOrderList.length != 0" 
+              @click="submitFinishOrder()"
               class="mt-4 inline-flex items-start justify-start rounded bg-indigo-700 px-6 py-3 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 sm:mt-0"
             >
-              <p class="text-sm font-medium leading-none text-white">Add Task</p>
+              <p  class="text-sm font-medium leading-none text-white">完成訂單</p>
             </button>
           </div>
           <div class="mt-7 overflow-x-auto">
@@ -89,9 +91,16 @@
                         class="relative flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-sm bg-gray-200"
                       >
                       <input type="checkbox" 
-                        value="" 
+                        id="checkbox"
+                        v-if="order.finish === false"
                         class="h-full w-full text-blue-600 bg-gray-100 border-gray-300 rounded"
                         @click= "finishOrder(order.order_id)"
+                      >   
+                      <input type="checkbox" 
+                        id="checkbox"
+                        v-else
+                        class="h-full w-full text-blue-600 bg-gray-100 border-gray-300 rounded"
+                        disabled
                       >   
                       </div>
                     </div>
@@ -118,8 +127,8 @@
                     </button>
                   </td>
                   <td class="pl-4">
-                    <button class="block py-3 text-sm focus:outline-none leading-none text-green-700 bg-green-100 rounded w-20"> done    </button>
-                                
+                    <button v-if="order.finish === true" class="block py-3 text-sm focus:outline-none leading-none text-green-700 bg-green-100 rounded w-20"> done </button>
+                    <button v-else  class="block py-3 text-sm focus:outline-none leading-none text-red-700 bg-red-100 rounded w-20"> pending </button>
                   </td>
                 </tr>
               </tbody>
@@ -141,7 +150,8 @@ import { useUserStore } from '@/store/user'
 const userStore = useUserStore()
 const { userInfo } = storeToRefs(userStore)
 const historyOrder = ref<order[]>()
-
+const showDialog = ref(false)
+const finishOrderList = ref<number[]>([])
 onMounted(async () => {
   historyOrder.value = await restaurantService.getHistoryOrder(userInfo.value.outh_token)
   console.log(historyOrder.value)
@@ -149,7 +159,26 @@ onMounted(async () => {
 })
 
 const finishOrder = (id: number) => {
-  console.log(id)
+  if (finishOrderList.value.includes(id)) {
+    finishOrderList.value = finishOrderList.value.filter((item) => item !== id)
+  } else {
+    finishOrderList.value.push(id)
+  }
+}
+
+const submitFinishOrder = async () => {
+  console.log(finishOrderList.value)
+  for (let i = 0; i < finishOrderList.value.length; i++) {
+    await restaurantService.finishOrder(userInfo.value.outh_token, finishOrderList.value[i])
+  }
+  historyOrder.value = await restaurantService.getHistoryOrder(userInfo.value.outh_token)
+  finishOrderList.value = []
+  console.log(historyOrder.value)
+  showDialog.value = true
+}
+
+const close = () => {
+  showDialog.value = false
 }
 </script>
 
