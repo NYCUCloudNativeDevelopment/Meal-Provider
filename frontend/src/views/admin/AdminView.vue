@@ -7,7 +7,14 @@
           <div class="mt-5 flex flex-row items-center justify-center px-5">
             <div class="text-gray-800">
               <div class="text-3xl font-bold">餐廳選擇</div>
-            </div>
+            </div> 
+          </div>
+          <div class="items-center justify-between sm:flex mt-5">
+            <button 
+              class="ml-auto mr-5 inline-flex text-items-center justify-center rounded-lg border border-blue-400 bg-blue-200 px-8 py-4  hover:bg-white focus:ring-2"
+            >
+            <svg class="h-5 w-5 mr-1 text-gray-800"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />  <line x1="12" y1="8" x2="12" y2="16" />  <line x1="8" y1="12" x2="16" y2="12" /></svg><p  class="text-lg font-medium leading-none text-gray-700"> 新增餐廳</p>
+            </button>
           </div>
   
           <!-- end categories -->
@@ -83,6 +90,7 @@ onMounted(async () => {
   for (let i = 0; i < restaurants.value.length; i++) {
     restaurants.value[i].url = '/admin/restaurant/' + restaurants.value[i].id
   }
+  restaurants.value.push(restaurants.value[0])
 })
 
 const getRestaurantList = async () => {
