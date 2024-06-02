@@ -21,13 +21,13 @@ def create_app():
     scheduler.start()
     atexit.register(lambda: scheduler.shutdown())
 
+    app.register_blueprint(bp_root, url_prefix='')  
+    app.register_blueprint(bp_main, url_prefix='/main')
+    app.register_blueprint(bp_pos, url_prefix='/pos')
+    app.register_blueprint(bp_admin, url_prefix='/admin')
     return app
 
 app = create_app()
-app.register_blueprint(bp_root, url_prefix='')
-app.register_blueprint(bp_main, url_prefix='/main')
-app.register_blueprint(bp_pos, url_prefix='/pos')
-app.register_blueprint(bp_admin, url_prefix='/admin')
 
 @app.errorhandler(404)
 def not_found(error):
