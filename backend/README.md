@@ -97,6 +97,7 @@
                 {
                     "dish_id": ,
                     "dish_name": ,
+                    "number": ,
                     "price": 
                 },
             ]
