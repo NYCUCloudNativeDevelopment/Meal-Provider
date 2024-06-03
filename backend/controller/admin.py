@@ -137,6 +137,8 @@ def update_price():
     price = request.get_json().get('updated_price')
     print(dish_id, price)
     dish = Dish_Info.query.filter_by(DishID=dish_id).first()
+    if dish is None:
+        return jsonify({'status': 'fail', 'error': 'Invalid dish id'})
     dish.Price = price
     db.session.commit()
     return jsonify({'status': 'success'})

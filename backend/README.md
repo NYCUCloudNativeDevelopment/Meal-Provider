@@ -445,8 +445,8 @@ run this in ./backend/
 {
     "restaurant_name": ,
     "phone": ,
-    "open_time": "HH:SS",
-    "close_time": "HH:SS",
+    "open_time": "HH:MM",
+    "close_time": "HH:MM",
     "description": 
 }
 ```
