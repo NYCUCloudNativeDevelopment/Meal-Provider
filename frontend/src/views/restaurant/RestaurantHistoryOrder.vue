@@ -44,14 +44,14 @@
                 <div class="rounded-full px-8 py-2 text-gray-600 hover:bg-indigo-100 hover:text-indigo-700">
                   <p>Pending</p>
                 </div>
-              </a>           
+              </a>
             </div>
             <button
-              v-if="finishOrderList.length != 0" 
+              v-if="finishOrderList.length != 0"
               @click="submitFinishOrder()"
               class="mt-4 inline-flex items-start justify-start rounded bg-indigo-700 px-6 py-3 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 sm:mt-0"
             >
-              <p  class="text-sm font-medium leading-none text-white">完成訂單</p>
+              <p class="text-sm font-medium leading-none text-white">完成訂單</p>
             </button>
           </div>
           <div class="mt-7 overflow-x-auto">
@@ -84,24 +84,30 @@
                     <p class="ml-2 text-sm leading-none text-gray-600">訂單狀態</p>
                   </td>
                 </tr>
-                <tr v-for="order in historyOrder" tabindex="0" class="h-16 rounded border border-gray-100 focus:outline-none">
+                <tr
+                  v-for="order in historyOrder"
+                  tabindex="0"
+                  class="h-16 rounded border border-gray-100 focus:outline-none"
+                >
                   <td>
                     <div class="ml-5">
                       <div
                         class="relative flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-sm bg-gray-200"
                       >
-                      <input type="checkbox" 
-                        id="checkbox"
-                        v-if="order.finish === false"
-                        class="h-full w-full text-blue-600 bg-gray-100 border-gray-300 rounded"
-                        @click= "finishOrder(order.order_id)"
-                      >   
-                      <input type="checkbox" 
-                        id="checkbox"
-                        v-else
-                        class="h-full w-full text-blue-600 bg-gray-100 border-gray-300 rounded"
-                        disabled
-                      >   
+                        <input
+                          type="checkbox"
+                          id="checkbox"
+                          v-if="order.finish === false"
+                          class="h-full w-full rounded border-gray-300 bg-gray-100 text-blue-600"
+                          @click="finishOrder(order.order_id)"
+                        />
+                        <input
+                          type="checkbox"
+                          id="checkbox"
+                          v-else
+                          class="h-full w-full rounded border-gray-300 bg-gray-100 text-blue-600"
+                          disabled
+                        />
                       </div>
                     </div>
                   </td>
@@ -127,8 +133,18 @@
                     </button>
                   </td>
                   <td class="pl-4">
-                    <button v-if="order.finish === true" class="block py-3 text-sm focus:outline-none leading-none text-green-700 bg-green-100 rounded w-20"> done </button>
-                    <button v-else  class="block py-3 text-sm focus:outline-none leading-none text-red-700 bg-red-100 rounded w-20"> pending </button>
+                    <button
+                      v-if="order.finish === true"
+                      class="block w-20 rounded bg-green-100 py-3 text-sm leading-none text-green-700 focus:outline-none"
+                    >
+                      done
+                    </button>
+                    <button
+                      v-else
+                      class="block w-20 rounded bg-red-100 py-3 text-sm leading-none text-red-700 focus:outline-none"
+                    >
+                      pending
+                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -155,12 +171,11 @@ const finishOrderList = ref<number[]>([])
 onMounted(async () => {
   historyOrder.value = await restaurantService.getHistoryOrder(userInfo.value.outh_token)
   console.log(historyOrder.value)
-
 })
 
 const finishOrder = (id: number) => {
   if (finishOrderList.value.includes(id)) {
-    finishOrderList.value = finishOrderList.value.filter((item) => item !== id)
+    finishOrderList.value = finishOrderList.value.filter(item => item !== id)
   } else {
     finishOrderList.value.push(id)
   }
@@ -181,4 +196,3 @@ const close = () => {
   showDialog.value = false
 }
 </script>
-

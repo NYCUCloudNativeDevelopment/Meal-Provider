@@ -1,18 +1,41 @@
 <template>
-    <div class="mx-auto bg-white">
-      <div class="flex flex-col-reverse lg:flex-row">
-        <AdminSidebar class="min-h-screen w-full shadow-lg lg:w-1/6"></AdminSidebar>
-        <div class="bg-white-100 lg:w-6/6 min-h-screen w-full">
-          <!-- header -->
-          <div class="mt-5 flex flex-row items-center justify-center px-5">
-            <div class="text-gray-800">
-              <div class="text-3xl font-bold">餐廳選擇</div>
-            </div>
+  <AddMealDialog v-if="addRestaurantDialog" @click="close()"> 
+  </AddMealDialog>
+  <div class="mx-auto bg-white">
+    <div class="flex flex-col-reverse lg:flex-row">
+      <AdminSidebar class="min-h-screen w-full shadow-lg lg:w-1/6"></AdminSidebar>
+      <div class="bg-white-100 lg:w-6/6 min-h-screen w-full">
+        <!-- header -->
+        <div class="mt-5 flex flex-row items-center justify-center px-5">
+          <div class="text-gray-800">
+            <div class="text-3xl font-bold">餐廳選擇</div>
           </div>
-  
-          <!-- end categories -->
-          <!-- products -->
-          <div class="mt-5 grid grid-cols-4 gap-4 overflow-y-auto px-5">
+        </div>
+        <div class="mt-5 items-center justify-between sm:flex">
+          <button
+            @click="openAddRestaurantDailog()"
+            class="text-items-center ml-auto mr-5 inline-flex justify-center rounded-lg border border-blue-400 bg-blue-200 px-8 py-4 hover:bg-white focus:ring-2"
+          >
+            <svg
+              class="mr-1 h-5 w-5 text-gray-800"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+              <line x1="12" y1="8" x2="12" y2="16" />
+              <line x1="8" y1="12" x2="16" y2="12" />
+            </svg>
+            <p class="text-lg font-medium leading-none text-gray-700">新增餐廳</p>
+          </button>
+        </div>
+
+        <!-- end categories -->
+        <!-- products -->
+        <div class="mt-5 grid grid-cols-4 gap-4 overflow-y-auto px-5">
           <div
             class="bg-white-100 border-black-800 flex flex-col justify-between rounded-2xl border px-2 py-2 shadow-lg"
             v-for="restaurant in restaurants"
@@ -53,15 +76,15 @@
             </a>
           </div>
         </div>
-  
-          <!-- end products -->
-        </div>
+
+        <!-- end products -->
       </div>
     </div>
-  </template>
-  
+  </div>
+</template>
+
 <script lang="ts" setup>
-import AdminSidebar from '../../components/AdminSidebar.vue';
+import AdminSidebar from '../../components/AdminSidebar.vue'
 import { ref, computed, reactive, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import restaurantService from '@/service/restaurantService'
@@ -72,7 +95,7 @@ import { useUserStore } from '@/store/user'
 import router from '@/router'
 
 const restaurants = ref<restaurant[]>([])
-
+const addRestaurantDialog = ref(false)
 onMounted(async () => {
   const OuthResult = await userService.userCheckOuth()
   if (OuthResult === false) {
@@ -83,13 +106,22 @@ onMounted(async () => {
   for (let i = 0; i < restaurants.value.length; i++) {
     restaurants.value[i].url = '/admin/restaurant/' + restaurants.value[i].id
   }
+  restaurants.value.push(restaurants.value[0])
 })
 
 const getRestaurantList = async () => {
   const data = await workerService.getRestaurantList()
   restaurants.value = data
 }
-  
+
+const openAddRestaurantDailog = async () => {
+  addRestaurantDialog.value = true
+}
+
+const close = () => {
+  addRestaurantDialog.value = false
+}
+
 </script>
-  
+
 <style></style>
