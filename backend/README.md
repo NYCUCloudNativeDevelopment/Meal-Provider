@@ -198,7 +198,7 @@ run this in ./backend/
         "id": 1,
         "restaurant": "KFC",
         "phone": 0912345678,
-        "picture": "/static/restaurant/kfc.png",
+        "picture": "/static/cover/kfc.png",
         "description": "Fast Food Restaurant",
         "rating": 4.3,
         "open_time": "12:00:00",
@@ -264,7 +264,7 @@ run this in ./backend/
 ```
 ### add review
 > done
-- endpoint: `/main/review`
+- endpoint: `/main/add_review`
 - method: POST
 - request body
 ```
