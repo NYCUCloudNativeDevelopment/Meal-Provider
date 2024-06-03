@@ -7,7 +7,9 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AddMealDialog: typeof import('./src/components/AddMealDialog.vue')['default']
     AdminSidebar: typeof import('./src/components/AdminSidebar.vue')['default']
+    ErrorDialog: typeof import('./src/components/ErrorDialog.vue')['default']
     RateOrderDialog: typeof import('./src/components/RateOrderDialog.vue')['default']
     RestaurantSidebar: typeof import('./src/components/RestaurantSidebar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

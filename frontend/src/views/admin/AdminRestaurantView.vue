@@ -1,14 +1,14 @@
 <template>
   <div class="mx-auto bg-white">
-    <div class="flex flex-col-reverse lg:flex-row gap-4">
+    <div class="flex flex-col-reverse gap-4 lg:flex-row">
       <AdminSidebar class="min-h-screen w-full shadow-lg lg:w-1/6"></AdminSidebar>
 
       <div class="w-full lg:w-5/6">
-        <div class="font-bold text-4xl px-5 py-6">{{ restaurantInfo?.restaurant }}</div>
-        <div class="font-bold text-lg mb-4 px-5">
+        <div class="px-5 py-6 text-4xl font-bold">{{ restaurantInfo?.restaurant }}</div>
+        <div class="mb-4 px-5 text-lg font-bold">
           營業時間: {{ restaurantInfo?.open_time }} - {{ restaurantInfo?.close_time }}
         </div>
-        <div class="font-bold text-lg mb-4 px-5">電話: {{ restaurantInfo?.phone }}</div>
+        <div class="mb-4 px-5 text-lg font-bold">電話: {{ restaurantInfo?.phone }}</div>
         <div class="mt-5 grid h-3/4 grid-cols-4 gap-4 overflow-y-auto px-5">
           <div
             style="cursor: pointer"
@@ -19,8 +19,8 @@
               <div class="font-bold text-gray-800">{{ meal.name }}</div>
             </div>
             <div class="flex flex-row items-center justify-between">
-              <span class="self-end text-lg font-bold text-yellow-500 px-4">${{ meal.price }}</span>
-              <img :src="'/api' + meal.picture" class="h-14 w-14 rounded-md object-cover mr-4" alt="" />
+              <span class="self-end px-4 text-lg font-bold text-yellow-500">${{ meal.price }}</span>
+              <img :src="'/api' + meal.picture" class="mr-4 h-14 w-14 rounded-md object-cover" alt="" />
             </div>
             <button
               type="button"
@@ -46,9 +46,7 @@
               Edit
             </button>
           </div>
-            
         </div>
-        
       </div>
     </div>
   </div>

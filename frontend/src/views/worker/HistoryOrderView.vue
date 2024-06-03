@@ -4,7 +4,6 @@
     <div class="flex flex-col-reverse lg:flex-row">
       <WorkerSidebar class="min-h-screen w-full shadow-lg lg:w-1/6"></WorkerSidebar>
       <div class="w-full lg:w-5/6">
-        
         <div class="px-4 py-4 md:px-10 md:py-7">
           <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">Order history</h1>
         </div>
@@ -50,35 +49,26 @@
           <div class="mt-7 overflow-x-auto">
             <table class="w-full whitespace-nowrap">
               <tbody>
-
-                <tr tabindex="0" class="h-16 rounded border border-gray-300 focus:outline-none ">
+                <tr tabindex="0" class="h-16 rounded border border-gray-300 focus:outline-none">
                   <td class="pl-5"></td>
                   <td class="pl-5">
                     <div class="flex items-center">
-                      <p class="mr-2 text-base font-medium leading-none text-gray-700">
-                        餐廳名稱
-                      </p>
+                      <p class="mr-2 text-base font-medium leading-none text-gray-700">餐廳名稱</p>
                     </div>
                   </td>
                   <td class="pl-24">
                     <div class="flex items-center">
-                      <p class="ml-2 text-sm leading-none text-gray-600">
-                        總共消費金額
-                      </p>
+                      <p class="ml-2 text-sm leading-none text-gray-600">總共消費金額</p>
                     </div>
                   </td>
-                  <td class="pl-5">
-                  </td>
-                  <td class="pl-5">
-                  </td>
+                  <td class="pl-5"></td>
+                  <td class="pl-5"></td>
                   <td class="pl-5">
                     <div class="flex items-center">
                       <p class="ml-2 text-sm leading-none text-gray-600">餐廳評分</p>
                     </div>
                   </td>
-                  <td class="pl">
-
-                  </td>
+                  <td class="pl"></td>
 
                   <td>
                     <div class="flex items-center">
@@ -100,22 +90,22 @@
                         role="button"
                         aria-label="option"
                       >
-                      <svg
-                        data-accordion-icon
-                        class="h-3 w-3 shrink-0 rotate-180"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 10 6"
-                      >
-                        <path
-                          stroke="currentColor"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M9 5 5 1 1 5"
-                        />
-                      </svg>
+                        <svg
+                          data-accordion-icon
+                          class="h-3 w-3 shrink-0 rotate-180"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 10 6"
+                        >
+                          <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 5 5 1 1 5"
+                          />
+                        </svg>
                       </button>
                       <div class="dropdown-content absolute right-0 z-30 mr-6 hidden w-24 bg-white shadow">
                         <div
@@ -134,7 +124,7 @@
                     </div>
                   </td>
                 </tr>
-                <tr v-for="order, index in orders" class="h-16 rounded border border-gray-300 focus:outline-none">
+                <tr v-for="(order, index) in orders" class="h-16 rounded border border-gray-300 focus:outline-none">
                   <td class="pl-4">{{ index + 1 }}</td>
                   <td class="pl-5">
                     <div class="flex items-center">
@@ -145,15 +135,11 @@
                   </td>
                   <td class="pl-24">
                     <div class="flex items-center">
-                      <p class="ml-2 text-sm leading-none text-gray-600">
-                        $ {{ order.total_price }}
-                      </p>
+                      <p class="ml-2 text-sm leading-none text-gray-600">$ {{ order.total_price }}</p>
                     </div>
                   </td>
-                  <td class="pl-5">
-                  </td>
-                  <td class="pl-5">
-                  </td>
+                  <td class="pl-5"></td>
+                  <td class="pl-5"></td>
                   <td class="pl-5">
                     <div class="flex items-center">
                       <p class="ml-2 text-sm leading-none text-gray-600">
@@ -161,9 +147,7 @@
                       </p>
                     </div>
                   </td>
-                  <td class="pl">
-
-                  </td>
+                  <td class="pl"></td>
 
                   <td>
                     <button
@@ -237,7 +221,6 @@
                     </div>
                   </td>
                 </tr>
-        
               </tbody>
             </table>
           </div>
@@ -279,12 +262,17 @@ const getHistortOrder = async () => {
 
 const openDialog = (index: number) => {
   selectIndex.value = index
-  showDialog.value = true 
+  showDialog.value = true
 }
 
 const submitReview = async () => {
   const orderID = orders.value[selectIndex.value].order_id
-  await workerService.reviewOrder(userInfo.value.outh_token, orderID, overAllRating.value, orders.value[selectIndex.value])
+  await workerService.reviewOrder(
+    userInfo.value.outh_token,
+    orderID,
+    overAllRating.value,
+    orders.value[selectIndex.value]
+  )
   await getHistortOrder()
   console.log(orders.value)
   showDialog.value = false
