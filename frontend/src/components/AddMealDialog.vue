@@ -11,7 +11,7 @@
             <!-- <label class="mb-2 block font-bold text-gray-700" for="name"> 餐點名稱 </label> -->
             <label class="mb-2 block font-bold text-gray-700" for="name"> 餐點名稱 </label>
             <input
-              :v-model="restaurantInfo.restaurant_name"
+              v-model="mealInfo.name"
               class="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
               id="name"
               type="text"
@@ -23,7 +23,7 @@
             <!-- <label class="mb-2 block font-bold text-gray-700" for="phone"> 餐點價錢 </label> -->
             <label class="mb-2 block font-bold text-gray-700" for="phone"> 餐點價錢 </label>
             <input
-              :v-model="restaurantInfo.phone"
+              v-model="mealInfo.price"
               class="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
               id="phone"
               type="number"
@@ -34,7 +34,7 @@
 
             />
           </div>
-
+         
           <!-- <div class="mb-4">
             <label class="mb-2 block font-bold text-gray-700" for="service"> Service </label>
             <select
@@ -50,10 +50,14 @@
             </select>
           </div> -->
           <div class="mb-4">
+            <label class="mb-2 block font-bold text-gray-700" for="message"> 照片 </label>
+            <input type="file" id="input" @change="handleFiles" />
+          </div>
+          <div class="mb-4">
             <!-- <label class="mb-2 block font-bold text-gray-700" for="message"> 餐點描述 </label> -->
             <label class="mb-2 block font-bold text-gray-700" for="message"> 餐點描述 </label>
             <textarea
-              v-model="restaurantInfo.description"
+              v-model="mealInfo.description"
               class="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
               id="message"
               rows="4"
@@ -76,8 +80,7 @@
                 </button>
 
                 <button
-
-                  @click="showTime()"
+                  @click="$emit('subm')"
                   class="inline-flex min-h-[2.25rem] items-center justify-center gap-1 rounded-lg border border-transparent bg-red-600 px-4 py-1 text-sm font-medium text-white shadow outline-none transition-colors hover:bg-red-500 focus:bg-red-700 focus:ring-2 focus:ring-inset focus:ring-white focus:ring-offset-2 focus:ring-offset-red-700 dark:focus:ring-offset-0"
                 >
                   <span class="flex items-center gap-1">
@@ -99,9 +102,10 @@ import { ref } from 'vue'
 import { useRestaurantStore } from '@/store/restaurant'
 import { storeToRefs } from 'pinia'
 const useRestaurant = useRestaurantStore()
-const { restaurantInfo } = storeToRefs(useRestaurant)
-const showTime = () => {
-  console.log(restaurantInfo.value)
+const { mealInfo } = storeToRefs(useRestaurant)
+
+const handleFiles = async (e: any) => {
+  mealInfo.value.picture = e.target.files[0]
 }
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <AddMealDialog v-if="addMealDialog" @close="close()"> </AddMealDialog>
+  <AddMealDialog v-if="addMealDialog" @close="close()" @subm="addNewMeal()"> </AddMealDialog>
   <div class="mx-auto bg-white">
     <div class="flex flex-col-reverse gap-4 lg:flex-row">
       <AdminSidebar class="min-h-screen w-full shadow-lg lg:w-1/6"></AdminSidebar>
@@ -83,9 +83,11 @@ import { storeToRefs } from 'pinia'
 import workerService from '@/service/workerService'
 import userService from '@/service/userService'
 import { useUserStore } from '@/store/user'
+import { useRestaurantStore } from '@/store/restaurant'
 import type { restaurant, meal } from '@/types/worker'
 import router from '@/router'
-
+import adminService from '@/service/adminService'
+const useRestaurant = useRestaurantStore()
 const userStore = useUserStore()
 const { userInfo } = storeToRefs(userStore)
 const route = useRoute()
@@ -93,6 +95,7 @@ const restaurantId = route.params.id
 const restaurantInfo = ref<restaurant>()
 const restaurantMeals = ref<meal[]>([])
 const addMealDialog = ref(false)
+const { mealInfo } = storeToRefs(useRestaurant)
 // const addMealDialog = ref(false)
 onMounted(async () => {
   const OuthResult = await userService.userCheckOuth()
@@ -108,6 +111,17 @@ const getRestaurant = async () => {
   restaurantMeals.value = restaurantInfo.value.meals
 }
 const close = () => {
+  addMealDialog.value = false
+}
+
+const addNewMeal = async () => {
+  // console.log(restaurantId[0])
+  addMealDialog.value = false
+  // console.log(restaurantId[0])
+  console.log(mealInfo.value)
+  mealInfo.value.restaurant_id = restaurantId[0]
+  await adminService.addNewMeal(userInfo.value.outh_token, mealInfo.value)
+  await getRestaurant()
   addMealDialog.value = false
 }
 // const close = () => {

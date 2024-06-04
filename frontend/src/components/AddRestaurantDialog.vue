@@ -55,7 +55,7 @@
             </select>
           </div> -->
           <div class="mb-4">
-            <label class="mb-2 block font-bold text-gray-700" for="message"> 餐廳描述 </label>
+            <label class="mb-2 block font-bold text-gray-700" for="message"> 照片 </label>
             <input type="file" id="input" @change="handleFiles" />
           </div>
           <div class="mb-4">

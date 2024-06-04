@@ -93,7 +93,6 @@ import type { restaurant } from '@/types/worker'
 import { useUserStore } from '@/store/user'
 import router from '@/router'
 import { useRestaurantStore } from '@/store/restaurant'
-import type AddMealDialog from '@/components/AddMealDialog.vue'
 import adminService from '@/service/adminService'
 
 const restaurants = ref<restaurant[]>([])
