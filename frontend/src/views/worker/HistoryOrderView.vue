@@ -11,7 +11,6 @@
         </div>
         <div class="bg-white px-4 py-4 md:px-8 md:py-7 xl:px-10">
           <div class="items-center justify-between sm:flex">
-    
             <div
               class="flex cursor-pointer items-center rounded bg-gray-200 px-4 py-3 text-sm font-medium leading-none text-gray-600 hover:bg-gray-300"
             >
@@ -126,7 +125,6 @@
                       View
                     </button>
                   </td>
-            
                 </tr>
               </tbody>
             </table>
@@ -177,7 +175,7 @@ const openDialog = (index: number) => {
 const close = () => {
   showDialog.value = false
   historyOrderDialog.value = false
-} 
+}
 const submitReview = async () => {
   const orderID = orders.value[selectIndex.value].order_id
   await workerService.reviewOrder(

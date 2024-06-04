@@ -74,7 +74,7 @@
 <script setup lang="ts">
 import router from '@/router/index'
 import userService from '@/service/userService'
-import SuccessDialog from './successDialog.vue';
+import SuccessDialog from './successDialog.vue'
 
 const logout = () => {
   userService.userLogout()
