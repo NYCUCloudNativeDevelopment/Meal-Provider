@@ -1,7 +1,11 @@
 <template>
   <!-- component -->
-  <successDialog v-if="showSuccessDialog" @close="closeSuccessDialog()" message="訂單已經成功送出去"></successDialog>
+  <successAlert v-if="showSuccessAlert" @close="closeSuccessAlert()" :message="message"> </successAlert>
+  <successDialog v-if="showSuccessDialog" @close="closeSuccessDialog()" :message="message"></successDialog>
+  <WarningDialog v-if="showWarningDialog" message="請重新登入"></WarningDialog>
   <ErrorDialog v-if="showErrorDialog" @close="closeErrorDialog()" message="訂單不能是空的"></ErrorDialog>
+  <!-- end component -->
+
   <div class="mx-auto bg-white">
     <div class="flex flex-col-reverse lg:flex-row">
       <RestaurantSidebar class="min-h-screen w-full justify-start shadow-lg lg:w-1/6"></RestaurantSidebar>
@@ -87,7 +91,7 @@
             <span
               style="cursor: pointer"
               @click="clearAllMeal()"
-              class="rounded-md border border-red-500 bg-red-100 px-4 py-2 font-semibold text-red-500 hover:bg-transparent"
+              class="z-20 rounded-md border border-red-500 bg-red-100 px-4 py-2 font-semibold text-red-500 hover:bg-transparent"
               >Clear All</span
             >
           </div>
@@ -108,19 +112,14 @@
                 class="bg-white-300 select-none rounded-md border border-red-400 px-3 py-1 hover:bg-gray-100"
                 >-</span
               >
-              <span
-                v-else
-                style="cursor: pointer"
-                @click="deleteMeal(index)"
-                class="bg-white-300 rounded-md border border-red-400 px-3 py-1 hover:bg-gray-100"
-              >
+              <span v-else style="cursor: pointer" @click="deleteMeal(index)" class="bg-white-300 px-2 py-1">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
-                  viewBox="0 0 24 24"
+                  viewBox="4 4 16 16"
                   stroke-width="1.5"
                   stroke="currentColor"
-                  class="h-6 w-2"
+                  class="h-6 w-4 hover:bg-gray-100"
                 >
                   <path
                     stroke-linecap="round"
@@ -137,7 +136,7 @@
                 >+</span
               >
             </div>
-            <div class="w-16 text-center text-lg font-semibold">${{ meal.price }}</div>
+            <div class="w-16 text-center text-lg font-semibold">${{ meal.price * meal.number }}</div>
           </div>
           <!-- <div class="mb-4 flex flex-row items-center justify-between">
             <div class="flex w-2/5 flex-row items-center">
@@ -209,14 +208,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, reactive, onMounted } from 'vue'
+import { ref, computed, reactive, onMounted, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import restaurantService from '@/service/restaurantService'
 import userService from '@/service/userService'
 import type { restaurant, meal, chart } from '@/types/restaurant'
 import { useUserStore } from '@/store/user'
 import router from '@/router'
-
 const meals = ref<meal[]>([])
 const userStore = useUserStore()
 
@@ -226,6 +224,7 @@ const restaurantInfo = reactive<restaurant>({
   meals: []
 })
 
+const message = ref('訂單已經成功送出去')
 const userOrder = reactive<any[]>([])
 const submitOrder = reactive<chart>({
   customer_id: 100006,
@@ -235,6 +234,8 @@ const submitOrder = reactive<chart>({
 const price = ref(0)
 const showSuccessDialog = ref(false)
 const showErrorDialog = ref(false)
+const showSuccessAlert = ref(false)
+const showWarningDialog = ref(false)
 
 onMounted(async () => {
   const OuthResult = await userService.userCheckOuth()
@@ -256,10 +257,29 @@ const changeCategorie = (type: boolean) => {
   meals.value = restaurantInfo.meals.filter((meal: any) => meal.combo === type)
 }
 
+const timer = ref()
 const showName = (meal: meal) => {
-  userOrder.push({ name: meal.name, number: 1, price: meal.price, dish_id: meal.dish_id })
+  message.value = `已經將 ${meal.name} 加入購物車`
+  clearTimeout(timer.value)
+  showSuccessAlert.value = true
+  let find = false
+
+  for (let i = 0; i < userOrder.length; i++) {
+    if (userOrder[i].dish_id === meal.dish_id) {
+      userOrder[i].number += 1
+      find = true
+      break
+    }
+  }
+
+  if (find == false) {
+    userOrder.push({ name: meal.name, number: 1, price: meal.price, dish_id: meal.dish_id, picture: meal.picture })
+  }
   price.value += meal.price
-  alert(meal.name)
+  timer.value = setTimeout(() => {
+    showSuccessAlert.value = false
+    clearTimeout(timer.value)
+  }, 1000)
 }
 
 const submitUserOrder = () => {
@@ -296,6 +316,13 @@ const deleteMeal = (index: number) => {
 }
 
 const clearAllMeal = () => {
+  message.value = '已經清空購物車'
+  showSuccessAlert.value = true
+  clearTimeout(timer.value)
+  timer.value = setTimeout(() => {
+    showSuccessAlert.value = false
+    clearTimeout(timer.value)
+  }, 1500)
   userOrder.splice(0, userOrder.length)
   price.value = 0
 }
@@ -315,4 +342,20 @@ const closeErrorDialog = () => {
 const closeSuccessDialog = () => {
   showSuccessDialog.value = false
 }
+
+const closeSuccessAlert = () => {
+  clearTimeout(timer.value)
+  showSuccessAlert.value = false
+}
+
+watch(userInfo, () => {
+  if (userInfo.value.outh_token === '') {
+    showWarningDialog.value = true
+    timer.value = setTimeout(() => {
+      showWarningDialog.value = false
+      clearTimeout(timer.value)
+      router.push('/')
+    }, 1250)
+  }
+})
 </script>

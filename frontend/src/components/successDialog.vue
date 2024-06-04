@@ -32,7 +32,7 @@
             <button
               type="button"
               class="absolute right-2.5 top-2.5 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
-              data-modal-toggle="successModal"
+              @click="$emit('close')"
             >
               <svg
                 aria-hidden="true"

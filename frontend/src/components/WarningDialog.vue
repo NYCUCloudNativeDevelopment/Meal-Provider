@@ -22,7 +22,7 @@
             <button
               type="button"
               class="absolute right-2.5 top-2.5 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
-              @click="$emit('close')"
+              data-modal-toggle="successModal"
             >
               <svg
                 aria-hidden="true"
@@ -39,24 +39,15 @@
               </svg>
               <span class="sr-only">Close modal</span>
             </button>
-            <div class="mx-auto mb-3.5 flex h-12 w-12 items-center justify-center rounded-full bg-red-200 p-2">
-              <svg
-                class="h-6 w-6 text-red-600"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-              <span class="sr-only">Success</span>
-            </div>
+
+            <i class="bx bx-error text-3xl text-orange-400">&#9888;</i>
+            <span class="sr-only">Success</span>
+
             <p class="mb-4 text-lg font-semibold text-gray-900">{{ message }}</p>
             <button
               @click="$emit('close')"
               type="button"
-              class="hover:bg-primary-700 rounded-lg bg-red-600 px-3 py-2 text-center text-sm font-medium text-white focus:outline-none focus:ring-4"
+              class="hover:bg-primary-700 rounded-lg bg-orange-400 px-3 py-2 text-center text-sm font-medium text-white focus:outline-none focus:ring-4"
             >
               Continue
             </button>
