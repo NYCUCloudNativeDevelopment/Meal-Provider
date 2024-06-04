@@ -11,8 +11,7 @@
             <label class="mb-2 block font-bold text-gray-700" for="name"> 餐點名稱 </label>
             <label class="mb-2 block font-bold text-gray-700" for="name"> 餐點名稱 </label>
             <input
-              :v-model="restaurantInfo.restaurantName"
-              :v-model="restaurantInfo.restaurantName"
+              :v-model="restaurantInfo.restaurant_name"
               class="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
               id="name"
               type="text"
@@ -24,8 +23,7 @@
             <label class="mb-2 block font-bold text-gray-700" for="phone"> 餐點價錢 </label>
             <label class="mb-2 block font-bold text-gray-700" for="phone"> 餐點價錢 </label>
             <input
-              :v-model="restaurantInfo.restaurantPhone"
-              :v-model="restaurantInfo.restaurantPhone"
+              :v-model="restaurantInfo.phone"
               class="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
               id="phone"
               type="number"
@@ -55,8 +53,7 @@
             <label class="mb-2 block font-bold text-gray-700" for="message"> 餐點描述 </label>
             <label class="mb-2 block font-bold text-gray-700" for="message"> 餐點描述 </label>
             <textarea
-              v-model="restaurantInfo.describe"
-              v-model="restaurantInfo.describe"
+              v-model="restaurantInfo.description"
               class="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
               id="message"
               rows="4"

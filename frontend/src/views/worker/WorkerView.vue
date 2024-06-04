@@ -8,6 +8,19 @@
           <div class="text-gray-800">
             <div class="text-3xl font-bold">餐廳選擇</div>
           </div>
+          
+        </div>
+
+        <div class="items-center justify-between sm:flex px-5">
+          <div
+            class="flex cursor-pointer items-center rounded bg-gray-200 px-4 py-3 text-sm font-medium leading-none text-gray-600 hover:bg-gray-300"
+          >
+            <p>Sort By:</p>
+            <select aria-label="select" class="ml-1 bg-transparent focus:text-indigo-600 focus:outline-none">
+              <option class="text-sm text-indigo-800">評分</option>
+              <option class="text-sm text-indigo-800">價錢</option>
+            </select>
+          </div>
         </div>
 
         <!-- end categories -->
@@ -85,20 +98,6 @@ onMounted(async () => {
   for (let i = 0; i < restaurants.value.length; i++) {
     restaurants.value[i].url = '/worker/restaurant/' + restaurants.value[i].id
   }
-  restaurants.value.push(restaurants.value[0])
-  restaurants.value.push(restaurants.value[0])
-  restaurants.value.push(restaurants.value[0])
-  restaurants.value.push(restaurants.value[0])
-  restaurants.value.push(restaurants.value[0])
-  restaurants.value.push(restaurants.value[0])
-  restaurants.value.push(restaurants.value[0])
-  restaurants.value.push(restaurants.value[0])
-  restaurants.value.push(restaurants.value[0])
-  restaurants.value.push(restaurants.value[0])
-  restaurants.value.push(restaurants.value[0])
-  restaurants.value.push(restaurants.value[0])
-  restaurants.value.push(restaurants.value[0])
-  restaurants.value.push(restaurants.value[0])
 })
 
 const getRestaurantList = async () => {

@@ -68,10 +68,9 @@ def upload_picture(type):
     # TODO test this part
     if type == 'cover':
         restaurant = Restaurant_Info.query.filter_by(RestaurantID=restaurant_id).first()
-        restaurant.Cover = filename
+        restaurant.Picture = filename
         db.session.commit()
     
-    return jsonify({'status': 'success', 'filename': filename})
 
 @jwt_required()
 def update_menu():
