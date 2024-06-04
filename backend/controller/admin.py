@@ -34,7 +34,7 @@ def add_dish():
     new_dish = Dish_Info(
         Name = dish_name, Description = description, 
         Price = price, Picture = filename, 
-        RestaurantID = restaurant_id, Combo = combo, 
+        RestaurantID = restaurant_id, Combo = False, 
         Available = True, Rating = 0, 
         RatingCnt = 0, TimesOfOrder = 0
     )
