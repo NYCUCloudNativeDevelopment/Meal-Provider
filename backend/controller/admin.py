@@ -71,6 +71,7 @@ def upload_picture(type):
         restaurant.Picture = filename
         db.session.commit()
     
+    return jsonify({'status': 'success', 'filename': filename})
 
 @jwt_required()
 def update_menu():
