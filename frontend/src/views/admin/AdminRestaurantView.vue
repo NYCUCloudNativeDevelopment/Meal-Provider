@@ -93,7 +93,7 @@ const restaurantId = route.params.id
 const restaurantInfo = ref<restaurant>()
 const restaurantMeals = ref<meal[]>([])
 const addMealDialog = ref(false)
-const addMealDialog = ref(false)
+// const addMealDialog = ref(false)
 onMounted(async () => {
   const OuthResult = await userService.userCheckOuth()
   if (OuthResult === false) {
@@ -110,7 +110,7 @@ const getRestaurant = async () => {
 const close = () => {
   addMealDialog.value = false
 }
-const close = () => {
-  addMealDialog.value = false
-}
+// const close = () => {
+//   addMealDialog.value = false
+// }
 </script>
