@@ -101,7 +101,6 @@ import type AddMealDialog from '@/components/AddMealDialog.vue'
 const restaurants = ref<restaurant[]>([])
 const addRestaurantDialog = ref(false)
 const useRestaurant = useUserStore()
-const { restaurantInfo } = storeToRefs(useRestaurant)
 
 onMounted(async () => {
   const OuthResult = await userService.userCheckOuth()
