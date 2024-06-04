@@ -39,10 +39,10 @@
               </svg>
               <span class="sr-only">Close modal</span>
             </button>
-         
-                <i class="text-orange-400 bx bx-error text-3xl">&#9888;</i>
-              <span class="sr-only">Success</span>
-           
+
+            <i class="bx bx-error text-3xl text-orange-400">&#9888;</i>
+            <span class="sr-only">Success</span>
+
             <p class="mb-4 text-lg font-semibold text-gray-900">{{ message }}</p>
             <button
               @click="$emit('close')"

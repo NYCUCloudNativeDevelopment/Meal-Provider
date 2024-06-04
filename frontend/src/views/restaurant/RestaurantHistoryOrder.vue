@@ -28,7 +28,7 @@
                 href=" javascript:void(0)"
                 @click="selectType = 'All'"
               >
-                <div v-if="selectType == 'All'"class="rounded-full bg-indigo-100 px-8 py-2 text-indigo-700">
+                <div v-if="selectType == 'All'" class="rounded-full bg-indigo-100 px-8 py-2 text-indigo-700">
                   <p>All</p>
                 </div>
                 <div v-else class="rounded-full px-8 py-2 text-gray-600 hover:bg-indigo-100 hover:text-indigo-700">
@@ -212,7 +212,7 @@ const submitFinishOrder = async () => {
 const close = () => {
   showDialog.value = false
   historyOrderDialog.value = false
-} 
+}
 
 watch(selectType, async () => {
   if (selectType.value === 'All') {

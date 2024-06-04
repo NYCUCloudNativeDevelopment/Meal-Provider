@@ -1,6 +1,5 @@
 <template>
-  <AddRestaurantDialog v-if="addRestaurantDialog" @close="close()"> 
-  </AddRestaurantDialog>
+  <AddRestaurantDialog v-if="addRestaurantDialog" @close="close()"> </AddRestaurantDialog>
   <div class="mx-auto bg-white">
     <div class="flex flex-col-reverse lg:flex-row">
       <AdminSidebar class="min-h-screen w-full shadow-lg lg:w-1/6"></AdminSidebar>
@@ -125,7 +124,6 @@ const openAddRestaurantDailog = async () => {
 const close = () => {
   addRestaurantDialog.value = false
 }
-
 </script>
 
 <style></style>
