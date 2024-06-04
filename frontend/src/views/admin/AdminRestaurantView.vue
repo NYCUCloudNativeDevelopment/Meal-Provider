@@ -93,6 +93,7 @@ const restaurantId = route.params.id
 const restaurantInfo = ref<restaurant>()
 const restaurantMeals = ref<meal[]>([])
 const addMealDialog = ref(false)
+const addMealDialog = ref(false)
 onMounted(async () => {
   const OuthResult = await userService.userCheckOuth()
   if (OuthResult === false) {
@@ -105,6 +106,9 @@ onMounted(async () => {
 const getRestaurant = async () => {
   restaurantInfo.value = await workerService.getRestaurant(userInfo.value.outh_token, restaurantId[0])
   restaurantMeals.value = restaurantInfo.value.meals
+}
+const close = () => {
+  addMealDialog.value = false
 }
 const close = () => {
   addMealDialog.value = false

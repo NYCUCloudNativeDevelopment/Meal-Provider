@@ -3,6 +3,8 @@
   <successDialog v-if="showDialog" @close="close()" message="Yo have finish these order"></successDialog>
   <OrderDetailDialog v-if="historyOrderDialog" @close="close()"></OrderDetailDialog>
 
+  <OrderDetailDialog v-if="historyOrderDialog" @close="close()"></OrderDetailDialog>
+
   <!-- <successDialog restaurant"showDialog" @close="close()" message="Yo have success submit the order"></successDialog> -->
   <div class="mx-auto bg-white">
     <!-- component -->
@@ -24,8 +26,10 @@
           <div class="items-center justify-between sm:flex">
             <div class="flex items-center">
               <button
+              <button
                 class="rounded-full focus:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-800"
                 href=" javascript:void(0)"
+                @click="selectType = 'All'"
                 @click="selectType = 'All'"
               >
                 <div v-if="selectType == 'All'" class="rounded-full bg-indigo-100 px-8 py-2 text-indigo-700">
@@ -36,10 +40,17 @@
                 </div>
               </button>
               <button
+              </button>
+              <button
                 class="ml-4 rounded-full focus:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-800 sm:ml-8"
                 href="javascript:void(0)"
                 @click="selectType = 'Done'"
+                @click="selectType = 'Done'"
               >
+                <div v-if="selectType == 'Done'" class="rounded-full bg-indigo-100 px-8 py-2 text-indigo-700">
+                  <p>Done</p>
+                </div>
+                <div v-else class="rounded-full px-8 py-2 text-gray-600 hover:bg-indigo-100 hover:text-indigo-700">
                 <div v-if="selectType == 'Done'" class="rounded-full bg-indigo-100 px-8 py-2 text-indigo-700">
                   <p>Done</p>
                 </div>
@@ -47,11 +58,17 @@
                   <p>Done</p>
                 </div>
               </button>
+              </button>
               <a
                 class="ml-4 rounded-full focus:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-800 sm:ml-8"
                 href="javascript:void(0)"
                 @click="selectType = 'Pending'"
+                @click="selectType = 'Pending'"
               >
+                <div v-if="selectType == 'Pending'" class="rounded-full bg-indigo-100 px-8 py-2 text-indigo-700">
+                  <p>Pending</p>
+                </div>
+                <div v-else class="rounded-full px-8 py-2 text-gray-600 hover:bg-indigo-100 hover:text-indigo-700">
                 <div v-if="selectType == 'Pending'" class="rounded-full bg-indigo-100 px-8 py-2 text-indigo-700">
                   <p>Pending</p>
                 </div>
@@ -142,6 +159,7 @@
                   <td class="pl-4">
                     <button
                       @click="historyOrderDialog = true"
+                      @click="historyOrderDialog = true"
                       class="rounded bg-gray-100 px-5 py-3 text-sm leading-none text-gray-600 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-red-300 focus:ring-offset-2"
                     >
                       View
@@ -173,17 +191,20 @@
 
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import restaurantService from '@/service/restaurantService'
 import type { restaurant, meal, order } from '@/types/restaurant'
 import { useUserStore } from '@/store/user'
 
 const selectType = ref('All')
+const selectType = ref('All')
 const userStore = useUserStore()
 const { userInfo } = storeToRefs(userStore)
 const historyOrder = ref<order[]>()
 const showDialog = ref(false)
 const finishOrderList = ref<number[]>([])
+const historyOrderDialog = ref(false)
 const historyOrderDialog = ref(false)
 onMounted(async () => {
   historyOrder.value = await restaurantService.getHistoryOrder(userInfo.value.outh_token)

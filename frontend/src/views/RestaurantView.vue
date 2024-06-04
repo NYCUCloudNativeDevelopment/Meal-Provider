@@ -117,8 +117,10 @@
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="4 4 16 16"
+                  viewBox="4 4 16 16"
                   stroke-width="1.5"
                   stroke="currentColor"
+                  class="h-6 w-4 hover:bg-gray-100"
                   class="h-6 w-4 hover:bg-gray-100"
                 >
                   <path
@@ -136,6 +138,7 @@
                 >+</span
               >
             </div>
+            <div class="w-16 text-center text-lg font-semibold">${{ meal.price * meal.number }}</div>
             <div class="w-16 text-center text-lg font-semibold">${{ meal.price * meal.number }}</div>
           </div>
           <!-- <div class="mb-4 flex flex-row items-center justify-between">
@@ -209,6 +212,7 @@
 
 <script lang="ts" setup>
 import { ref, computed, reactive, onMounted, watch } from 'vue'
+import { ref, computed, reactive, onMounted, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import restaurantService from '@/service/restaurantService'
 import userService from '@/service/userService'
@@ -236,6 +240,8 @@ const showSuccessDialog = ref(false)
 const showErrorDialog = ref(false)
 const showSuccessAlert = ref(false)
 const showWarningDialog = ref(false)
+const showSuccessAlert = ref(false)
+const showWarningDialog = ref(false)
 
 onMounted(async () => {
   const OuthResult = await userService.userCheckOuth()
@@ -258,6 +264,7 @@ const changeCategorie = (type: boolean) => {
 }
 
 const timer = ref()
+const timer = ref()
 const showName = (meal: meal) => {
   message.value = `已經將 ${meal.name} 加入購物車`
   clearTimeout(timer.value)
@@ -276,6 +283,10 @@ const showName = (meal: meal) => {
     userOrder.push({ name: meal.name, number: 1, price: meal.price, dish_id: meal.dish_id, picture: meal.picture })
   }
   price.value += meal.price
+  timer.value = setTimeout(() => {
+    showSuccessAlert.value = false
+    clearTimeout(timer.value)
+  }, 1000)
   timer.value = setTimeout(() => {
     showSuccessAlert.value = false
     clearTimeout(timer.value)
@@ -323,6 +334,13 @@ const clearAllMeal = () => {
     showSuccessAlert.value = false
     clearTimeout(timer.value)
   }, 1500)
+  message.value = '已經清空購物車'
+  showSuccessAlert.value = true
+  clearTimeout(timer.value)
+  timer.value = setTimeout(() => {
+    showSuccessAlert.value = false
+    clearTimeout(timer.value)
+  }, 1500)
   userOrder.splice(0, userOrder.length)
   price.value = 0
 }
@@ -342,6 +360,22 @@ const closeErrorDialog = () => {
 const closeSuccessDialog = () => {
   showSuccessDialog.value = false
 }
+
+const closeSuccessAlert = () => {
+  clearTimeout(timer.value)
+  showSuccessAlert.value = false
+}
+
+watch(userInfo, () => {
+  if (userInfo.value.outh_token === '') {
+    showWarningDialog.value = true
+    timer.value = setTimeout(() => {
+      showWarningDialog.value = false
+      clearTimeout(timer.value)
+      router.push('/')
+    }, 1250)
+  }
+})
 
 const closeSuccessAlert = () => {
   clearTimeout(timer.value)

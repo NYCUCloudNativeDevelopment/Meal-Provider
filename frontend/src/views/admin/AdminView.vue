@@ -1,5 +1,5 @@
 <template>
-  <AddRestaurantDialog v-if="addRestaurantDialog" @close="close()"> </AddRestaurantDialog>
+  <AddRestaurantDialog v-if="addRestaurantDialog" @close="close()" @sub="addRestaurant()"> </AddRestaurantDialog>
   <div class="mx-auto bg-white">
     <div class="flex flex-col-reverse lg:flex-row">
       <AdminSidebar class="min-h-screen w-full shadow-lg lg:w-1/6"></AdminSidebar>
@@ -94,11 +94,12 @@ import { useUserStore } from '@/store/user'
 import router from '@/router'
 import { useRestaurantStore } from '@/store/restaurant'
 import type AddMealDialog from '@/components/AddMealDialog.vue'
+import adminService from '@/service/adminService'
 
 const restaurants = ref<restaurant[]>([])
 const addRestaurantDialog = ref(false)
-const useRestaurant = useUserStore()
-
+const { userInfo } = storeToRefs(useUserStore())
+const { restaurantInfo } = storeToRefs(useRestaurantStore())
 onMounted(async () => {
   const OuthResult = await userService.userCheckOuth()
   if (OuthResult === false) {
@@ -109,7 +110,7 @@ onMounted(async () => {
   for (let i = 0; i < restaurants.value.length; i++) {
     restaurants.value[i].url = '/admin/restaurant/' + restaurants.value[i].id
   }
-  restaurants.value.push(restaurants.value[0])
+  console.log(restaurants.value)
 })
 
 const getRestaurantList = async () => {
@@ -122,6 +123,12 @@ const openAddRestaurantDailog = async () => {
 }
 
 const close = () => {
+  addRestaurantDialog.value = false
+}
+
+const addRestaurant = async () => {
+  await adminService.addNewRestaurant(userInfo.value.outh_token, restaurantInfo.value)
+  await getRestaurantList()
   addRestaurantDialog.value = false
 }
 </script>
