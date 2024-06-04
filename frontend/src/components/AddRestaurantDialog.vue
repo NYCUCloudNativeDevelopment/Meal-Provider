@@ -10,7 +10,7 @@
             <label class="mb-2 block font-bold text-gray-700"> 餐廳名稱 </label>
             <input
               v-model="restaurantInfo.restaurant_name"
-              class="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"   
+              class="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
               placeholder="輸入餐廳名稱(必填)"
             />
           </div>
@@ -56,7 +56,7 @@
           </div> -->
           <div class="mb-4">
             <label class="mb-2 block font-bold text-gray-700" for="message"> 餐廳描述 </label>
-            <input type="file" id="input" @change="handleFiles">
+            <input type="file" id="input" @change="handleFiles" />
           </div>
           <div class="mb-4">
             <label class="mb-2 block font-bold text-gray-700" for="message"> 餐廳描述 </label>

@@ -12,12 +12,9 @@
             營業時間: {{ restaurantInfo?.open_time }} - {{ restaurantInfo?.close_time }}
           </div>
           <div class="mb-4 px-5 text-lg font-bold">電話: {{ restaurantInfo?.phone }}</div>
-          <div
-            class="text-items-center ml-auto mr-5 inline-flex justify-center rounded-lg border"
-          >
-          </div>
+          <div class="text-items-center ml-auto mr-5 inline-flex justify-center rounded-lg border"></div>
         </div>
-        <div class="items-center justify-between sm:flex px-5">
+        <div class="items-center justify-between px-5 sm:flex">
           <div
             class="flex cursor-pointer items-center rounded bg-gray-200 px-4 py-3 text-sm font-medium leading-none text-gray-600 hover:bg-gray-300"
           >

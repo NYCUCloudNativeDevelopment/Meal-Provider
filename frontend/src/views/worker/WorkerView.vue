@@ -8,10 +8,9 @@
           <div class="text-gray-800">
             <div class="text-3xl font-bold">餐廳選擇</div>
           </div>
-          
         </div>
 
-        <div class="items-center justify-between sm:flex px-5">
+        <div class="items-center justify-between px-5 sm:flex">
           <div
             class="flex cursor-pointer items-center rounded bg-gray-200 px-4 py-3 text-sm font-medium leading-none text-gray-600 hover:bg-gray-300"
           >
