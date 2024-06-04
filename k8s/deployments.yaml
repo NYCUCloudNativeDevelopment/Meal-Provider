@@ -169,6 +169,12 @@ spec:
       labels:
         app: prometheus
     spec:
+      securityContext:
+        fsGroup: 472
+        runAsUser: 472
+        runAsGroup: 472
+        supplementalGroups:
+          - 0
       containers:
       - name: prometheus
         image: prom/prometheus:v2.52.0
@@ -186,7 +192,8 @@ spec:
           mountPath: /etc/prometheus
       volumes:
       - name: prometheus-storage
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: prometheus-pvc
       - name: prometheus-config
         configMap:
           name: prometheus-config

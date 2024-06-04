@@ -6,6 +6,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
+  storageClassName: nfs-storageclass
   resources:
     requests:
       storage: 256Mi
@@ -17,6 +18,19 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
+  storageClassName: nfs-storageclass
+  resources:
+    requests:
+      storage: 256Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prometheus-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: nfs-storageclass
   resources:
     requests:
       storage: 256Mi
