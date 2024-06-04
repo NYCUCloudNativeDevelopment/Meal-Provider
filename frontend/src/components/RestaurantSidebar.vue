@@ -78,7 +78,6 @@ import userService from '@/service/userService'
 
 const logout = () => {
   userService.userLogout()
-  router.push('/')
 }
 </script>
 

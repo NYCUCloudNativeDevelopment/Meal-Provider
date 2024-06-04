@@ -1,6 +1,8 @@
 <template>
   <!-- component -->
   <successDialog v-if="showDialog" @close="close()" message="Yo have finish these order"></successDialog>
+  <OrderDetailDialog v-if="historyOrderDialog" @close="close()"></OrderDetailDialog>
+
   <!-- <successDialog restaurant"showDialog" @close="close()" message="Yo have success submit the order"></successDialog> -->
   <div class="mx-auto bg-white">
     <!-- component -->
@@ -21,27 +23,39 @@
         <div class="bg-white px-4 py-4 md:px-8 md:py-7 xl:px-10">
           <div class="items-center justify-between sm:flex">
             <div class="flex items-center">
-              <a
+              <button
                 class="rounded-full focus:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-800"
                 href=" javascript:void(0)"
+                @click="selectType = 'All'"
               >
-                <div class="rounded-full bg-indigo-100 px-8 py-2 text-indigo-700">
+                <div v-if="selectType == 'All'"class="rounded-full bg-indigo-100 px-8 py-2 text-indigo-700">
                   <p>All</p>
                 </div>
-              </a>
-              <a
+                <div v-else class="rounded-full px-8 py-2 text-gray-600 hover:bg-indigo-100 hover:text-indigo-700">
+                  <p>All</p>
+                </div>
+              </button>
+              <button
                 class="ml-4 rounded-full focus:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-800 sm:ml-8"
                 href="javascript:void(0)"
+                @click="selectType = 'Done'"
               >
-                <div class="rounded-full px-8 py-2 text-gray-600 hover:bg-indigo-100 hover:text-indigo-700">
+                <div v-if="selectType == 'Done'" class="rounded-full bg-indigo-100 px-8 py-2 text-indigo-700">
                   <p>Done</p>
                 </div>
-              </a>
+                <div v-else class="rounded-full px-8 py-2 text-gray-600 hover:bg-indigo-100 hover:text-indigo-700">
+                  <p>Done</p>
+                </div>
+              </button>
               <a
                 class="ml-4 rounded-full focus:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-800 sm:ml-8"
                 href="javascript:void(0)"
+                @click="selectType = 'Pending'"
               >
-                <div class="rounded-full px-8 py-2 text-gray-600 hover:bg-indigo-100 hover:text-indigo-700">
+                <div v-if="selectType == 'Pending'" class="rounded-full bg-indigo-100 px-8 py-2 text-indigo-700">
+                  <p>Pending</p>
+                </div>
+                <div v-else class="rounded-full px-8 py-2 text-gray-600 hover:bg-indigo-100 hover:text-indigo-700">
                   <p>Pending</p>
                 </div>
               </a>
@@ -127,6 +141,7 @@
                   </td>
                   <td class="pl-4">
                     <button
+                      @click="historyOrderDialog = true"
                       class="rounded bg-gray-100 px-5 py-3 text-sm leading-none text-gray-600 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-red-300 focus:ring-offset-2"
                     >
                       View
@@ -157,17 +172,19 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import restaurantService from '@/service/restaurantService'
 import type { restaurant, meal, order } from '@/types/restaurant'
 import { useUserStore } from '@/store/user'
 
+const selectType = ref('All')
 const userStore = useUserStore()
 const { userInfo } = storeToRefs(userStore)
 const historyOrder = ref<order[]>()
 const showDialog = ref(false)
 const finishOrderList = ref<number[]>([])
+const historyOrderDialog = ref(false)
 onMounted(async () => {
   historyOrder.value = await restaurantService.getHistoryOrder(userInfo.value.outh_token)
   console.log(historyOrder.value)
@@ -194,5 +211,29 @@ const submitFinishOrder = async () => {
 
 const close = () => {
   showDialog.value = false
-}
+  historyOrderDialog.value = false
+} 
+
+watch(selectType, async () => {
+  if (selectType.value === 'All') {
+    historyOrder.value = await restaurantService.getHistoryOrder(userInfo.value.outh_token)
+  } else if (selectType.value === 'Done') {
+    historyOrder.value = await restaurantService.getHistoryOrder(userInfo.value.outh_token)
+    for (let i = 0; i < historyOrder.value.length; i++) {
+      if (historyOrder.value[i].finish === false) {
+        historyOrder.value.splice(i, 1)
+        i--
+      }
+    }
+  } else {
+    historyOrder.value = await restaurantService.getHistoryOrder(userInfo.value.outh_token)
+    for (let i = 0; i < historyOrder.value.length; i++) {
+      if (historyOrder.value[i].finish === true) {
+        historyOrder.value.splice(i, 1)
+        i--
+      }
+    }
+  }
+  console.log(historyOrder.value)
+})
 </script>

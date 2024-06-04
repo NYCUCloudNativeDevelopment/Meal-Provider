@@ -1,6 +1,6 @@
 <template>
-  <AddMealDialog v-if="addRestaurantDialog" @click="close()"> 
-  </AddMealDialog>
+  <AddRestaurantDialog v-if="addRestaurantDialog" @close="close()"> 
+  </AddRestaurantDialog>
   <div class="mx-auto bg-white">
     <div class="flex flex-col-reverse lg:flex-row">
       <AdminSidebar class="min-h-screen w-full shadow-lg lg:w-1/6"></AdminSidebar>
@@ -93,9 +93,14 @@ import userService from '@/service/userService'
 import type { restaurant } from '@/types/worker'
 import { useUserStore } from '@/store/user'
 import router from '@/router'
+import { useRestaurantStore } from '@/store/restaurant'
+import type AddMealDialog from '@/components/AddMealDialog.vue'
 
 const restaurants = ref<restaurant[]>([])
 const addRestaurantDialog = ref(false)
+const useRestaurant = useUserStore()
+const { restaurantInfo } = storeToRefs(useRestaurant)
+
 onMounted(async () => {
   const OuthResult = await userService.userCheckOuth()
   if (OuthResult === false) {

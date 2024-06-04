@@ -1,14 +1,39 @@
 <template>
+  <AddMealDialog v-if="addMealDialog" @close="close()"> 
+  </AddMealDialog>
   <div class="mx-auto bg-white">
     <div class="flex flex-col-reverse gap-4 lg:flex-row">
       <AdminSidebar class="min-h-screen w-full shadow-lg lg:w-1/6"></AdminSidebar>
 
       <div class="w-full lg:w-5/6">
-        <div class="px-5 py-6 text-4xl font-bold">{{ restaurantInfo?.restaurant }}</div>
-        <div class="mb-4 px-5 text-lg font-bold">
-          營業時間: {{ restaurantInfo?.open_time }} - {{ restaurantInfo?.close_time }}
+        <div class="px-5 py-6 text-4xl font-bold">
+          {{ restaurantInfo?.restaurant }}
         </div>
+        <div class="mr-auto items-center justify-between sm:flex">
+          <div class="mb-4 px-5 text-lg font-bold">
+          營業時間: {{ restaurantInfo?.open_time }} - {{ restaurantInfo?.close_time }}
+        </div> 
         <div class="mb-4 px-5 text-lg font-bold">電話: {{ restaurantInfo?.phone }}</div>
+          <button
+            @click="addMealDialog = true"
+            class="text-items-center ml-auto mr-5 inline-flex justify-center rounded-lg border border-blue-400 bg-blue-200 px-8 py-4 hover:bg-white focus:ring-2"
+          >
+            <svg
+              class="mr-1 h-5 w-5 text-gray-800"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+              <line x1="12" y1="8" x2="12" y2="16" />
+              <line x1="8" y1="12" x2="16" y2="12" />
+            </svg>
+            <p class="text-lg font-medium leading-none text-gray-700">新增餐點</p>
+          </button>
+        </div>
         <div class="mt-5 grid h-3/4 grid-cols-4 gap-4 overflow-y-auto px-5">
           <div
             style="cursor: pointer"
@@ -68,7 +93,7 @@ const route = useRoute()
 const restaurantId = route.params.id
 const restaurantInfo = ref<restaurant>()
 const restaurantMeals = ref<meal[]>([])
-
+const addMealDialog = ref(false)
 onMounted(async () => {
   const OuthResult = await userService.userCheckOuth()
   if (OuthResult === false) {
@@ -81,5 +106,8 @@ onMounted(async () => {
 const getRestaurant = async () => {
   restaurantInfo.value = await workerService.getRestaurant(userInfo.value.outh_token, restaurantId[0])
   restaurantMeals.value = restaurantInfo.value.meals
+}
+const close = () => {
+  addMealDialog.value = false
 }
 </script>
