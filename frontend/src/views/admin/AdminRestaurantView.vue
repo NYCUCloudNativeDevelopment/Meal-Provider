@@ -1,5 +1,6 @@
 <template>
-  <AddMealDialog v-if="addMealDialog" @close="close()"> </AddMealDialog>
+  <AddMealDialog v-if="addMealDialog" @close="close()"> 
+  </AddMealDialog>
   <div class="mx-auto bg-white">
     <div class="flex flex-col-reverse gap-4 lg:flex-row">
       <AdminSidebar class="min-h-screen w-full shadow-lg lg:w-1/6"></AdminSidebar>
@@ -10,9 +11,9 @@
         </div>
         <div class="mr-auto items-center justify-between sm:flex">
           <div class="mb-4 px-5 text-lg font-bold">
-            營業時間: {{ restaurantInfo?.open_time }} - {{ restaurantInfo?.close_time }}
-          </div>
-          <div class="mb-4 px-5 text-lg font-bold">電話: {{ restaurantInfo?.phone }}</div>
+          營業時間: {{ restaurantInfo?.open_time }} - {{ restaurantInfo?.close_time }}
+        </div> 
+        <div class="mb-4 px-5 text-lg font-bold">電話: {{ restaurantInfo?.phone }}</div>
           <button
             @click="addMealDialog = true"
             class="text-items-center ml-auto mr-5 inline-flex justify-center rounded-lg border border-blue-400 bg-blue-200 px-8 py-4 hover:bg-white focus:ring-2"
@@ -93,6 +94,7 @@ const restaurantId = route.params.id
 const restaurantInfo = ref<restaurant>()
 const restaurantMeals = ref<meal[]>([])
 const addMealDialog = ref(false)
+const addMealDialog = ref(false)
 onMounted(async () => {
   const OuthResult = await userService.userCheckOuth()
   if (OuthResult === false) {
@@ -105,6 +107,9 @@ onMounted(async () => {
 const getRestaurant = async () => {
   restaurantInfo.value = await workerService.getRestaurant(userInfo.value.outh_token, restaurantId[0])
   restaurantMeals.value = restaurantInfo.value.meals
+}
+const close = () => {
+  addMealDialog.value = false
 }
 const close = () => {
   addMealDialog.value = false

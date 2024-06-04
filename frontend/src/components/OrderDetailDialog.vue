@@ -6,7 +6,7 @@
       <div class="mx-auto mt-20 max-w-xl overflow-hidden rounded-2xl bg-white shadow-lg">
         <div class="px-6 py-4 text-center text-2xl font-bold uppercase text-gray-600">餐點內容</div>
         <div class="px-6 py-4">
-          <div class="mb-4 flex flex-row items-center justify-between" v-for="(meal, index) in userOrder">
+            <div class="mb-4 flex flex-row items-center justify-between" v-for="(meal, index) in userOrder">
             <div class="flex w-2/5 flex-row items-center">
               <img :src="'/api' + meal.picture" class="h-10 w-10 rounded-md object-cover" alt="test" />
               <span class="ml-4 text-sm font-semibold">{{ meal.name }}</span>
@@ -16,10 +16,10 @@
             </div>
             <div class="w-16 text-center text-lg font-semibold">${{ meal.price * meal.number }}</div>
           </div>
-
+          
           <div class="space-y-2">
             <div aria-hidden="true" class="border-t px-2 dark:border-gray-700"></div>
-
+            
             <div class="px-6 py-2">
               <div class="grid grid-cols-[repeat(auto-fit,minmax(0,1fr))] gap-2">
                 <button
@@ -49,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from 'vue';
 import { useRestaurantStore } from '@/store/restaurant'
 import { storeToRefs } from 'pinia'
 const useRestaurant = useRestaurantStore()
@@ -64,7 +64,7 @@ const userOrder = ref([
 ])
 const showTime = () => {
   console.log(restaurantInfo.value)
-}
+};
 </script>
 
 <style></style>

@@ -6,12 +6,12 @@ export const useRestaurantStore = defineStore({
   id: 'addRestaurant',
   state: () => ({
     restaurantInfo: {
-      startTime: '11:00',
-      endTime: '20:00',
-      restaurantName: '',
-      restaurantPhone: '',
-      describe: ''
-    }
+        startTime: '11:00',
+        endTime: '20:00',
+        restaurantName: '',
+        restaurantPhone: '',
+        describe: '',
+    },
   }),
-  persist: true
+  persist: true,
 })

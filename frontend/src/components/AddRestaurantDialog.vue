@@ -26,7 +26,7 @@
               placeholder="輸入餐廳聯絡電話(必填)"
             />
           </div>
-
+          
           <div class="mb-4">
             <label class="mb-2 block font-bold text-gray-700" for="time"> 營業開始時間 </label>
             <input
@@ -101,14 +101,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from 'vue';
 import { useRestaurantStore } from '@/store/restaurant'
 import { storeToRefs } from 'pinia'
 const useRestaurant = useRestaurantStore()
 const { restaurantInfo } = storeToRefs(useRestaurant)
 const showTime = () => {
   console.log(restaurantInfo.value)
-}
+};
 </script>
 
 <style></style>

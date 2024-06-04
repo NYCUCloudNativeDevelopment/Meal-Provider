@@ -1,5 +1,6 @@
 <template>
   <OrderDetailDialog v-if="historyOrderDialog" @close="close()"></OrderDetailDialog>
+  <OrderDetailDialog v-if="historyOrderDialog" @close="close()"></OrderDetailDialog>
   <RateOrderDialog v-if="showDialog" @close="submitReview()"></RateOrderDialog>
   <div class="mx-auto bg-white">
     <div class="flex flex-col-reverse lg:flex-row">
@@ -10,6 +11,7 @@
         </div>
         <div class="bg-white px-4 py-4 md:px-8 md:py-7 xl:px-10">
           <div class="items-center justify-between sm:flex">
+    
             <div
               class="flex cursor-pointer items-center rounded bg-gray-200 px-4 py-3 text-sm font-medium leading-none text-gray-600 hover:bg-gray-300"
             >
@@ -45,6 +47,11 @@
                   </td>
                   <td class="pl-5">
                     <div class="flex items-center">
+                      <p class="ml-2 text-sm leading-none text-gray-600">訂餐日期日期</p>
+                    </div>
+                  </td>
+                  <td class="pl-5">
+                    <div class="flex items-center">
                       <p class="ml-2 text-sm leading-none text-gray-600">餐廳評分</p>
                     </div>
                   </td>
@@ -56,6 +63,8 @@
                     </div>
                   </td>
                   <td class="pl-4">
+                    <div class="flex items-center">
+                      <p class="ml-2 text-sm leading-none text-gray-600">明細</p>
                     <div class="flex items-center">
                       <p class="ml-2 text-sm leading-none text-gray-600">明細</p>
                     </div>
@@ -87,6 +96,13 @@
                   <td class="pl-5">
                     <div class="flex items-center">
                       <p class="ml-2 text-sm leading-none text-gray-600">
+                        {{ order.order_time }}
+                      </p>
+                    </div>
+                  </td>
+                  <td class="pl-5">
+                    <div class="flex items-center">
+                      <p class="ml-2 text-sm leading-none text-gray-600">
                         {{ order.overall_rating }}
                       </p>
                     </div>
@@ -104,11 +120,13 @@
                   <td class="pl-4">
                     <button
                       @click="historyOrderDialog = true"
+                      @click="historyOrderDialog = true"
                       class="rounded bg-gray-100 px-5 py-3 text-sm leading-none text-gray-600 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-red-300 focus:ring-offset-2"
                     >
                       View
                     </button>
                   </td>
+            
                 </tr>
               </tbody>
             </table>
@@ -130,6 +148,7 @@ import router from '@/router'
 
 const orderStore = useOrderStore()
 const userStore = useUserStore()
+const historyOrderDialog = ref(false)
 const historyOrderDialog = ref(false)
 const { userInfo } = storeToRefs(userStore)
 const showDialog = ref(false)
@@ -158,7 +177,7 @@ const openDialog = (index: number) => {
 const close = () => {
   showDialog.value = false
   historyOrderDialog.value = false
-}
+} 
 const submitReview = async () => {
   const orderID = orders.value[selectIndex.value].order_id
   await workerService.reviewOrder(
