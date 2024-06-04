@@ -22,19 +22,6 @@ export default class restaurantService {
       throw error
     }
   }
-  static async checkOuth(token: string): Promise<boolean> {
-    const response = await fetch('/api/pos/get_order', {
-      headers: {
-        Authorization: 'Bearer ' + token
-      }
-    })
-    console.log(response)
-    if (response.status === 200) {
-      return true
-    } else {
-      return false
-    }
-  }
   static async addOrder(token: string, order: chart): Promise<string> {
     try {
       const response = await fetch('/api/pos/add_order', {
@@ -57,22 +44,40 @@ export default class restaurantService {
   }
 
   static async getHistoryOrder(token: string): Promise<order[]> {
-    const response = await fetch('/api/pos/get_order', {
-      headers: {
-        Authorization: 'Bearer ' + token
+    try {
+      const response = await fetch('/api/pos/get_order', {
+        headers: {
+          Authorization: 'Bearer ' + token
+        }
+      })
+      if (response.status === 403) {
+        throw new Error('Permission Denied')
       }
-    })
-    const data = (await response.json()) as {
-      orders: order[]
+      const data = (await response.json()) as {
+        orders: order[]
+      }
+      return data.orders
+    } catch (error) {
+      console.error('GET /api/pos/get_order', error)
+      throw error
     }
-    return data.orders
   }
-  static async finishOrder(token: string, order_id: number): Promise<void> {
-    const response = await fetch(`/api/pos/finish/${order_id}`, {
-      method: 'POST',
-      headers: {
-        Authorization: 'Bearer ' + token
+  static async finishOrder(token: string, order_id: number): Promise<boolean> {
+    try {
+      const response = await fetch(`/api/pos/finish/${order_id}`, {
+        method: 'POST',
+        headers: {
+          Authorization: 'Bearer ' + token
+        }
+      })
+      if (response.status === 403) {
+        throw new Error('Permission Denied')
       }
-    })
+      return true
+    } catch (error) {
+      console.error('POST /api/pos/finish', error)
+      throw error
+    }
+    
   }
 }
