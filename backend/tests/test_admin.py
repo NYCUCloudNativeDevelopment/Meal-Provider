@@ -172,3 +172,12 @@ def test_admin_update_menu_invalid_dish_id(client, session):
     assert response.json['status'] == 'fail'
     assert response.json['error'].find('Invalid dish id') != -1
     assert dish.Available == original_status
+
+def test_admin_monthly_payment_report(client):
+    token = generate_token(100002, 'admin')
+    response = client.post('/admin/monthly_payment_report', json={"year": 2024, "month": 6}, headers={'Authorization': 'Bearer ' + token})
+    assert response.status_code == 200
+    assert 'Content-Disposition' in response.headers
+    assert 'attachment' in response.headers['Content-Disposition']
+    assert 'filename=' in response.headers['Content-Disposition']
+    assert response.headers['Content-Type'] == 'text/csv; charset=utf-8'

@@ -224,6 +224,65 @@ def add_restaurant():
     db.session.commit()
     return jsonify({'status': 'success', 'restaurant_id': new_restaurant.RestaurantID})
 
+
+@jwt_required()
+def get_monthly_payment_report():
+    if not check_permission('admin'):
+        return jsonify({'error': 'Permission Denied'}), 403
+    month = request.get_json().get('month')
+    year = request.get_json().get('year')
+    now = datetime.now()
+    if month < 1 or month > 12 or (year == now.year and month > now.month):
+        return jsonify({'status': 'fail', 'error': 'Invalid month'})
+    if year > now.year:
+        return jsonify({'status': 'fail', 'error': 'Invalid year'})
+    if os.path.exists(f"monthly_report/{year}_{month}_payment.csv"):
+        return send_from_directory("monthly_report", f"{year}_{month}_payment.csv", as_attachment=True)
+
+    column = "staff ID, name, on credit(total), order count"
+    restaurants = Restaurant_Info.query.all()
+    for restaurant in restaurants:
+        column += f", on credit({restaurant.RestaurantName}), order count({restaurant.RestaurantName})"
+    column += "\n"
+
+    data = {}
+    result = db.session.query(
+        Staff_Info.StaffID,
+        Staff_Info.StaffName,
+        func.sum(Orders.TotalPrice).label('total_payment'),
+        func.count(Orders.OrderID).label('order_count'),) \
+    .join(Orders, Orders.CustomerID == Staff_Info.StaffID, isouter=True) \
+    .filter(
+        Orders.OrderTime >= datetime(year, month, 1), 
+        Orders.OrderTime < datetime(year, month + 1, 1), 
+        Orders.Finish == True) \
+    .group_by(Staff_Info.StaffID).all()
+
+    for row in result:
+        data[row[0]] = [row[0], row[1], row[2], row[3]]
+    
+    for restaurant in restaurants:
+        result = db.session.query(
+            Staff_Info.StaffID,
+            func.sum(Orders.TotalPrice).label('total_payment'),
+            func.count(Orders.OrderID).label('order_count'),) \
+        .join(Orders, Orders.CustomerID == Staff_Info.StaffID, isouter=True) \
+        .filter(
+            Orders.OrderTime >= datetime(year, month, 1), 
+            Orders.OrderTime < datetime(year, month + 1, 1), 
+            Orders.Finish == True,
+            Orders.RestaurantID == restaurant.RestaurantID) \
+        .group_by(Staff_Info.StaffID).all()
+        for row in result:
+            data[row[0]].extend([row[1], row[2]])
+    
+    with open(f"monthly_report/{year}_{month}_payment.csv", 'w') as file:
+        file.write(column)
+        for key in data:
+            file.write(','.join(map(str, data[key])) + '\n')  
+
+    return send_from_directory("monthly_report", f"{year}_{month}_payment.csv", as_attachment=True)
+
 def reset_paid_flag():
     print("Resetting paid flag")
     staffs = Staff_Info.query.all()
