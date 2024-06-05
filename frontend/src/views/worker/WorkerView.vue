@@ -1,4 +1,5 @@
 <template>
+  <WarningDialog v-if="showWarningDialog" message="請重新登入"></WarningDialog>
   <div class="mx-auto bg-white">
     <div class="flex flex-col-reverse lg:flex-row">
       <WorkerSidebar class="min-h-screen w-full shadow-lg lg:w-1/6"></WorkerSidebar>
@@ -74,7 +75,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, reactive, onMounted } from 'vue'
+import { ref, computed, reactive, onMounted, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import workerService from '@/service/workerService'
 import userService from '@/service/userService'
@@ -82,9 +83,10 @@ import { useUserStore } from '@/store/user'
 import type { restaurant } from '@/types/worker'
 import router from '@/router'
 
+const showWarningDialog = ref(false)
 const userStore = useUserStore()
 const { userInfo } = storeToRefs(userStore)
-
+const timer = ref()
 const restaurants = ref<restaurant[]>([])
 
 onMounted(async () => {
@@ -103,6 +105,17 @@ const getRestaurantList = async () => {
   const data = await workerService.getRestaurantList()
   restaurants.value = data
 }
+
+watch(userInfo, () => {
+  if (userInfo.value.outh_token === '') {
+    showWarningDialog.value = true
+    timer.value = setTimeout(() => {
+      showWarningDialog.value = false
+      clearTimeout(timer.value)
+      router.push('/')
+    }, 1000)
+  }
+})
 </script>
 
 <style></style>

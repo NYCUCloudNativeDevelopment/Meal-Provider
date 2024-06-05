@@ -1,4 +1,6 @@
 <template>
+  <WarningDialog v-if="showWarningDialog" message="請重新登入"></WarningDialog>
+  
   <AddMealDialog v-if="addMealDialog" @close="close()" @subm="addNewMeal()"> </AddMealDialog>
   <div class="mx-auto bg-white">
     <div class="flex flex-col-reverse gap-4 lg:flex-row">
@@ -78,7 +80,7 @@
 
 <script lang="ts" setup>
 import { useRoute } from 'vue-router'
-import { ref, computed, reactive, onMounted } from 'vue'
+import { ref, computed, reactive, onMounted, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import workerService from '@/service/workerService'
 import userService from '@/service/userService'
@@ -97,6 +99,8 @@ const restaurantMeals = ref<meal[]>([])
 const addMealDialog = ref(false)
 const { mealInfo } = storeToRefs(useRestaurant)
 // const addMealDialog = ref(false)
+const showWarningDialog = ref(false)
+const timer = ref()
 onMounted(async () => {
   const OuthResult = await userService.userCheckOuth()
   if (OuthResult === false) {
@@ -127,4 +131,14 @@ const addNewMeal = async () => {
 // const close = () => {
 //   addMealDialog.value = false
 // }
+watch(userInfo, () => {
+  if (userInfo.value.outh_token === '') {
+    showWarningDialog.value = true
+    timer.value = setTimeout(() => {
+      showWarningDialog.value = false
+      clearTimeout(timer.value)
+      router.push('/')
+    }, 1000)
+  }
+})
 </script>

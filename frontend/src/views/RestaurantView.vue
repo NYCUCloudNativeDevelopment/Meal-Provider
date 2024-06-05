@@ -2,7 +2,7 @@
   <!-- component -->
   <successAlert v-if="showSuccessAlert" @close="closeSuccessAlert()" :message="message"> </successAlert>
   <successDialog v-if="showSuccessDialog" @close="closeSuccessDialog()" :message="message"></successDialog>
-  <WarningDialog v-if="showWarningDialog" message="請重新登入"></WarningDialog>
+  <WarningDialog v-if="showWarningDialog" message="已成功登出"></WarningDialog>
   <ErrorDialog v-if="showErrorDialog" @close="closeErrorDialog()" message="訂單不能是空的"></ErrorDialog>
   <!-- end component -->
 

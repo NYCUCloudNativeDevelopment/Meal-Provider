@@ -1,5 +1,7 @@
 <template>
   <!-- component -->
+  <WarningDialog v-if="showWarningDialog" message="請重新登入"></WarningDialog>
+  
   <successDialog v-if="showDialog" @close="close()" message="Yo have finish these order"></successDialog>
   <OrderDetailDialog :dishes="orderDishes" v-if="historyOrderDialog" @close="close()"></OrderDetailDialog>
 
@@ -196,7 +198,9 @@ import { storeToRefs } from 'pinia'
 import restaurantService from '@/service/restaurantService'
 import type { restaurant, meal, order } from '@/types/restaurant'
 import { useUserStore } from '@/store/user'
-
+import router from '@/router'
+const showWarningDialog = ref(false)
+const timer = ref()
 const selectType = ref('All')
 // const selectType = ref('All')
 const userStore = useUserStore()
@@ -257,5 +261,16 @@ watch(selectType, async () => {
     }
   }
   console.log(historyOrder.value)
+})
+
+watch(userInfo, () => {
+  if (userInfo.value.outh_token === '') {
+    showWarningDialog.value = true
+    timer.value = setTimeout(() => {
+      showWarningDialog.value = false
+      clearTimeout(timer.value)
+      router.push('/')
+    }, 1000)
+  }
 })
 </script>

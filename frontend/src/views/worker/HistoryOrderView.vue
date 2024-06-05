@@ -1,5 +1,6 @@
 <template>
   <!-- <OrderDetailDialog v-if="historyOrderDialog" @close="close()"></OrderDetailDialog> -->
+  <WarningDialog v-if="showWarningDialog" message="請重新登入"></WarningDialog>
   <OrderDetailDialog :dishes="orderDishes" v-if="historyOrderDialog" @close="close()"></OrderDetailDialog>
   <RateOrderDialog v-if="showDialog" @close="submitReview()"></RateOrderDialog>
   <div class="mx-auto bg-white">
@@ -109,11 +110,21 @@
                   <td class="pl"></td>
 
                   <td>
+
                     <button
+                      v-if="order.overall_rating <= 0"
                       @click="openDialog(index)"
                       class="rounded bg-gray-100 px-5 py-3 text-sm leading-none text-gray-600 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-red-300 focus:ring-offset-2"
                     >
                       rate order
+                    </button>
+                    <button
+                      v-else
+                      @click="openDialog(index)"
+                      disabled
+                      class="rounded bg-gray-100 px-5 py-3 text-sm leading-none text-gray-600 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-red-300 focus:ring-offset-2"
+                    >
+                      已評分
                     </button>
                   </td>
                   <td class="pl-4">
@@ -136,7 +147,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, reactive, onMounted } from 'vue'
+import { ref, computed, reactive, onMounted, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import workerService from '@/service/workerService'
 import userService from '@/service/userService'
@@ -144,6 +155,9 @@ import { useUserStore } from '@/store/user'
 import { useOrderStore } from '@/store/order'
 import router from '@/router'
 
+
+const showWarningDialog = ref(false)
+const timer = ref()
 const orderStore = useOrderStore()
 const userStore = useUserStore()
 const historyOrderDialog = ref(false)
@@ -189,6 +203,17 @@ const submitReview = async () => {
   console.log(orders.value)
   showDialog.value = false
 }
+
+watch(userInfo, () => {
+  if (userInfo.value.outh_token === '') {
+    showWarningDialog.value = true
+    timer.value = setTimeout(() => {
+      showWarningDialog.value = false
+      clearTimeout(timer.value)
+      router.push('/')
+    }, 1000)
+  }
+})
 </script>
 
 <style></style>

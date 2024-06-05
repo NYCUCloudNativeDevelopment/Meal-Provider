@@ -1,4 +1,6 @@
 <template>
+  <WarningDialog v-if="showWarningDialog" message="請重新登入"></WarningDialog>
+  
   <AddRestaurantDialog v-if="addRestaurantDialog" @close="close()" @sub="addRestaurant()"> </AddRestaurantDialog>
   <div class="mx-auto bg-white">
     <div class="flex flex-col-reverse lg:flex-row">
@@ -84,7 +86,7 @@
 
 <script lang="ts" setup>
 import AdminSidebar from '../../components/AdminSidebar.vue'
-import { ref, computed, reactive, onMounted } from 'vue'
+import { ref, computed, reactive, onMounted, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import restaurantService from '@/service/restaurantService'
 import workerService from '@/service/workerService'
@@ -99,6 +101,8 @@ const restaurants = ref<restaurant[]>([])
 const addRestaurantDialog = ref(false)
 const { userInfo } = storeToRefs(useUserStore())
 const { restaurantInfo } = storeToRefs(useRestaurantStore())
+const showWarningDialog = ref(false)
+const timer = ref()
 onMounted(async () => {
   const OuthResult = await userService.userCheckOuth()
   if (OuthResult === false) {
@@ -130,6 +134,16 @@ const addRestaurant = async () => {
   await getRestaurantList()
   addRestaurantDialog.value = false
 }
+watch(userInfo, () => {
+  if (userInfo.value.outh_token === '') {
+    showWarningDialog.value = true
+    timer.value = setTimeout(() => {
+      showWarningDialog.value = false
+      clearTimeout(timer.value)
+      router.push('/')
+    }, 1000)
+  }
+})
 </script>
 
 <style></style>
