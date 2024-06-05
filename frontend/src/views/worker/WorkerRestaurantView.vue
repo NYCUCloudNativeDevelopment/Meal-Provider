@@ -16,17 +16,6 @@
           <div class="mb-4 px-5 text-lg font-bold">電話: {{ restaurantInfo?.phone }}</div>
           <div class="text-items-center ml-auto mr-5 inline-flex justify-center rounded-lg border"></div>
         </div>
-        <div class="items-center justify-between px-5 sm:flex">
-          <div
-            class="flex cursor-pointer items-center rounded bg-gray-200 px-4 py-3 text-sm font-medium leading-none text-gray-600 hover:bg-gray-300"
-          >
-            <p>Sort By:</p>
-            <select aria-label="select" class="ml-1 bg-transparent focus:text-indigo-600 focus:outline-none">
-              <option class="text-sm text-indigo-800">評分</option>
-              <option class="text-sm text-indigo-800">價錢</option>
-            </select>
-          </div>
-        </div>
         <div class="mt-5 grid  grid-cols-4 gap-4 h-auto px-5">
           <div
             style="cursor: pointer"
@@ -34,7 +23,10 @@
             v-for="meal in restaurantMeals"
           >
             <div class="px-4 py-4">
-              <div class="font-bold text-gray-800">餐點名稱: {{ meal.name }}</div>
+              <div class="font-bold text-gray-800">{{ meal.name }}</div>
+              <div class="font-bold text-gray-800" v-if="meal.combo == false">單點</div>
+              <div class="font-bold text-gray-800" v-else>套餐</div>
+             
             </div>
             <div class="px-4 py-4 flex flex-row items-center justify-between">
               <div class="font-bold text-gray-800">description: {{ meal.description }}</div>

@@ -47,6 +47,15 @@
             </select>
           </div> -->
           <div class="mb-4">
+            <label class="mb-2 block font-bold text-gray-700" for="message"> 單點 </label>
+            <select v-model="mealInfo.combo" class="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+              >
+              <option v-for="option in options" v-bind:value="option.value">
+                {{ option.text }}
+              </option>
+            </select>
+          </div>
+          <div class="mb-4">
             <label class="mb-2 block font-bold text-gray-700" for="message"> 照片 </label>
             <input type="file" id="input" @change="handleFiles" accept="image/png, image/gif, image/jpeg" />
           </div>
@@ -105,6 +114,11 @@ import { useRestaurantStore } from '@/store/restaurant'
 import { storeToRefs } from 'pinia'
 const useRestaurant = useRestaurantStore()
 const { mealInfo, checkHasUpload } = storeToRefs(useRestaurant)
+
+const options = ref([
+  { text: '單點', value: 0 },
+  { text: '套餐', value: 1 },
+])
 
 const handleFiles = async (e: any) => {
   mealInfo.value.picture = e.target.files[0]

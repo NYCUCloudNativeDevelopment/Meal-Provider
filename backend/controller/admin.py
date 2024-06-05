@@ -23,7 +23,7 @@ def add_dish():
     combo = request.get_json().get('combo')
     price = request.get_json().get('price')
     filename = request.get_json().get('picture_filename')
-
+    print(combo, flush=True)
     # TODO: check if the file has been uploaded
     picture_exist = True
     path = os.path.join('static', 'dish', filename)
@@ -34,7 +34,7 @@ def add_dish():
     new_dish = Dish_Info(
         Name = dish_name, Description = description, 
         Price = price, Picture = filename, 
-        RestaurantID = restaurant_id, Combo = False, 
+        RestaurantID = restaurant_id, Combo = combo, 
         Available = True, Rating = 0, 
         RatingCnt = 0, TimesOfOrder = 0
     )

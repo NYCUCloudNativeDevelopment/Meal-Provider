@@ -45,6 +45,8 @@
           >
             <div class="px-4 py-4">
               <div class="font-bold text-gray-800">{{ meal.name }}</div>
+              <div class="font-bold text-gray-800" v-if="meal.combo == false">單點</div>
+              <div class="font-bold text-gray-800" v-else>套餐</div>
             </div>
             <div class="py-4 flex flex-row items-center justify-between">
               <span class="self-end px-4 text-lg font-bold text-yellow-500">${{ meal.price }}</span>
