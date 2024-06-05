@@ -36,26 +36,26 @@
         </div>
         <!-- end categories -->
         <!-- products -->
-        <div class="mt-5 grid h-3/4 grid-cols-3 gap-4 overflow-y-auto px-5">
+        <div class="mt-5 grid h-auto grid-cols-3 gap-4 px-5 py-5">
           <div
             style="cursor: pointer"
             @click="showName(meal)"
-            class="flex h-1/3 flex-col justify-between rounded-md border bg-white px-3 py-3"
+            class="flex h-auto flex-col justify-between rounded-md border bg-white px-3 py-3"
             v-for="meal in meals"
           >
             <div>
               <div class="font-bold text-gray-800">{{ meal.name }}</div>
             </div>
             <div>
-              <div class="text-gray-500">一極棒美味</div>
+              <div class="text-gray-500">{{ meal.description }}</div>
             </div>
-            <div class="flex flex-row items-center justify-between">
+            <div class="mt-20 flex flex-row items-center justify-between">
               <span class="self-end text-lg font-bold text-yellow-500">${{ meal.price }}</span>
               <img :src="'/api' + meal.picture" class="h-14 w-14 rounded-md object-cover" alt="" />
             </div>
             <button
               type="button"
-              class="mt-1 inline-flex items-center justify-center rounded-lg border border-orange-400 bg-orange-200 px-5 py-2.5 text-sm font-medium text-black hover:bg-white focus:outline-none focus:ring-4"
+              class="mt-5 inline-flex items-center justify-center rounded-lg border border-orange-400 bg-orange-200 px-5 py-2 text-sm font-medium text-black hover:bg-white focus:outline-none focus:ring-4"
             >
               <svg
                 class="-ms-2 me-2 h-5 w-5"
@@ -256,7 +256,13 @@ onMounted(async () => {
 const getRestaurant = async () => {
   const data = await restaurantService.getRestaurant(userInfo.value.outh_token)
   restaurantInfo.restaurant = data.restaurant
-  restaurantInfo.meals = data.meals
+  restaurantInfo.meals = []
+  for (let i = 0; i < data.meals.length; i++) {
+    if (data.meals[i].available == 1) {
+      restaurantInfo.meals.push(data.meals[i])
+    }
+
+  }
 }
 
 const changeCategorie = (type: boolean) => {

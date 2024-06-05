@@ -9,11 +9,11 @@ describe('Testing for Worker Service', () => {
     beforeEach(() => {
         fetchMocker.enableMocks()
     });
-
+    const token = 'token'
     test('Get Restaurant list with authorized token', async () => {
         const restaurant_list = { restaurants: [{ id: 1, name: 'Restaurant 1' }, { id: 2, name: 'Restaurant 2' }, { id: 3, name: 'Restaurant 3' }, { id: 4, name: 'Restaurant 4' }] }
         fetchMocker.mockResponseOnce(JSON.stringify(restaurant_list)), { status: 200 }
-        const response = await workerService.getRestaurantList()
+        const response = await workerService.getRestaurantList(token)
 
         expect(response).toEqual(restaurant_list.restaurants)
     })

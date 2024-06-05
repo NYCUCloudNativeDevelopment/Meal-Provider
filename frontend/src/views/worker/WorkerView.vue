@@ -40,7 +40,7 @@
                 />
               </div>
               <div class="px-1 py-1">
-                <p>肯德基</p>
+                <p>{{ restaurant.restaurant }}</p>
                 <div class="mt-2 flex items-center">
                   <svg
                     class="me-1 h-4 w-4 text-yellow-300"
@@ -102,7 +102,7 @@ onMounted(async () => {
 })
 
 const getRestaurantList = async () => {
-  const data = await workerService.getRestaurantList()
+  const data = await workerService.getRestaurantList(userInfo.value.outh_token)
   restaurants.value = data
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <WarningDialog v-if="showWarningDialog" message="請重新登入"></WarningDialog>
+  <WarningDialog v-if="showWarningDialog" message="你已經登出"></WarningDialog>
   
   <div class="mx-auto bg-white">
     <div class="flex flex-col-reverse lg:flex-row">

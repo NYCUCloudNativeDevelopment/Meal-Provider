@@ -50,7 +50,7 @@
                 />
               </div>
               <div class="px-1 py-1">
-                <p>肯德基</p>
+                <p>{{ restaurant.restaurant }}</p>
                 <div class="mt-2 flex items-center">
                   <svg
                     class="me-1 h-4 w-4 text-yellow-300"
@@ -65,14 +65,6 @@
                   </svg>
                   <p class="ms-2 text-sm font-bold text-gray-900">{{ restaurant.rating }}</p>
                 </div>
-              </div>
-
-              <div class="px-1 py-2">
-                <p class="text-sm text-gray-500">營業時間：{{ restaurant.open_time }} - {{ restaurant.close_time }}</p>
-              </div>
-
-              <div class="px-1 py-2">
-                <p class="text-sm text-gray-500">價錢: $100 ~ $200</p>
               </div>
             </a>
           </div>
@@ -117,7 +109,7 @@ onMounted(async () => {
 })
 
 const getRestaurantList = async () => {
-  const data = await workerService.getRestaurantList()
+  const data = await workerService.getRestaurantList(userInfo.value.outh_token)
   restaurants.value = data
 }
 

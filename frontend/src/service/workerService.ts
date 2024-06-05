@@ -1,10 +1,15 @@
 import type { order, restaurant, orderReview } from '../types/worker'
 
 export default class workerService {
-  static async getRestaurantList(): Promise<any[]> {
+  static async getRestaurantList(token: string): Promise<any[]> {
     try {
       const response = await fetch('/api/main/restaurant_list')
       const data = await response.json()
+      for (let i = 0; i < data.restaurants.length; i++) {
+        const respones2 = await this.getRestaurant(token, data.restaurants[i].id.toString())
+        data.restaurants[i].open_time = respones2.open_time
+        data.restaurants[i].close_time = respones2.close_time
+      }
       return data.restaurants
     } catch (error) {
       console.error(`GET /api/main/restaurant_list ${error}`)
