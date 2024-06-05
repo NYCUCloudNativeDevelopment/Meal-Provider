@@ -99,12 +99,13 @@ const { mealInfo } = storeToRefs(useRestaurant)
 const showSuccessDialog = ref(false)
 const editMealDialog = ref(false)
 const showDeleteDialog = ref(false)
-const { mealPrice, available_dish_id } = storeToRefs(useRestaurant)
+const { mealPrice, available_dish_id, checkHasUpload } = storeToRefs(useRestaurant)
 const showWarningDialog = ref(false)
 const timer = ref()
 
 const currentChoose = ref(0)
 onMounted(async () => {
+  checkHasUpload.value = false
   const OuthResult = await userService.userCheckOuth()
   if (OuthResult === false) {
     alert('請重新登入')
@@ -136,13 +137,34 @@ const updateMealPrice = (meal: meal) => {
 
 const addNewMeal = async () => {
   // console.log(restaurantId[0])
-  addMealDialog.value = false
+
   // console.log(restaurantId[0])
   console.log(mealInfo.value)
   mealInfo.value.restaurant_id = restaurantId[0]
+  if (mealInfo.value.picture === null || 
+      mealInfo.value.picture === '' || 
+      mealInfo.value.picture === undefined || 
+      mealInfo.value.description === '' ||
+      mealInfo.value.name === '' ||
+      mealInfo.value.price === 0) {
+    console.log('no')
+    checkHasUpload.value = true    
+    return
+  }
+  addMealDialog.value = false
   await adminService.addNewMeal(userInfo.value.outh_token, mealInfo.value)
   await getRestaurant()
   addMealDialog.value = false
+  mealInfo.value = {
+    restaurant_id: '',
+    name: '',
+    price: 0,
+    description: '',
+    picture: null,
+    picture_filename: '',
+    combo: 0
+  }
+  checkHasUpload.value = false
 }
 
 const comfirmUpdateMealPrice = async () => {

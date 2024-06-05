@@ -92,10 +92,11 @@ import adminService from '@/service/adminService'
 const restaurants = ref<restaurant[]>([])
 const addRestaurantDialog = ref(false)
 const { userInfo } = storeToRefs(useUserStore())
-const { restaurantInfo } = storeToRefs(useRestaurantStore())
+const { restaurantInfo, checkHasUploadRestaurant } = storeToRefs(useRestaurantStore())
 const showWarningDialog = ref(false)
 const timer = ref()
 onMounted(async () => {
+  checkHasUploadRestaurant.value = false
   const OuthResult = await userService.userCheckOuth()
   if (OuthResult === false) {
     alert('請重新登入')
@@ -122,9 +123,25 @@ const close = () => {
 }
 
 const addRestaurant = async () => {
+  console.log(restaurantInfo.value)
+  if (restaurantInfo.value.close_time === '' || restaurantInfo.value.open_time === '' || 
+  restaurantInfo.value.phone === '' || restaurantInfo.value.restaurant_name === '' || restaurantInfo.value.picture === null) {
+    checkHasUploadRestaurant.value = true
+    console.log('quit')
+    return
+  }
+  checkHasUploadRestaurant.value = false
   await adminService.addNewRestaurant(userInfo.value.outh_token, restaurantInfo.value)
   await getRestaurantList()
   addRestaurantDialog.value = false
+  restaurantInfo.value = {
+    open_time: '11:00',
+    close_time: '20:00',
+    restaurant_name: '',
+    phone: '',
+    description: '',
+    picture: null
+  }
 }
 watch(userInfo, () => {
   if (userInfo.value.outh_token === '') {

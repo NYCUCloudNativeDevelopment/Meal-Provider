@@ -56,7 +56,7 @@
           </div> -->
           <div class="mb-4">
             <label class="mb-2 block font-bold text-gray-700" for="message"> 照片 </label>
-            <input type="file" id="input" @change="handleFiles" />
+            <input type="file" id="input" @change="handleFiles" accept="image/png, image/gif, image/jpeg" />
           </div>
           <div class="mb-4">
             <label class="mb-2 block font-bold text-gray-700" for="message"> 餐廳描述 </label>
@@ -67,6 +67,11 @@
               rows="4"
               placeholder="餐廳額外資訊"
             ></textarea>
+          </div>
+
+          <div class="mb-4">
+            <!-- <label class="mb-2 block font-bold text-gray-700" for="phone"> 餐點價錢 </label> -->
+            <label class="mb-2 block text-red-600 text-center" v-if="checkHasUploadRestaurant == true"> 有空白處尚未填寫或照片還沒有上傳 </label>
           </div>
           <div class="space-y-2">
             <div aria-hidden="true" class="border-t px-2 dark:border-gray-700"></div>
@@ -104,7 +109,7 @@ import { ref } from 'vue'
 import { useRestaurantStore } from '@/store/restaurant'
 import { storeToRefs } from 'pinia'
 const useRestaurant = useRestaurantStore()
-const { restaurantInfo } = storeToRefs(useRestaurant)
+const { restaurantInfo, checkHasUploadRestaurant } = storeToRefs(useRestaurant)
 import { useUserStore } from '@/store/user'
 const userStore = useUserStore()
 import adminService from '@/service/adminService'

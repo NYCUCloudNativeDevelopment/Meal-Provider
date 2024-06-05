@@ -26,7 +26,10 @@ export const useRestaurantStore = defineStore({
       dish_id: 0, 
       updated_price: 0,
     },
-    available_dish_id: [] as number[]
+    available_dish_id: [] as number[],
+    checkHasUpload: false,
+    checkHasUploadRestaurant: false,
+    restaurantId: 2
   }),
   persist: true
 })
