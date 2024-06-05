@@ -41,6 +41,10 @@ const router = createRouter({
     {
       path: '/admin/restaurant/:id',
       component: () => import('@/views/admin/AdminRestaurantView.vue')
+    },
+    {
+      path: '/admin/monthly-report',
+      component: () => import('@/views/admin/AdminMonthlyReportView.vue')
     }
     // {
     //   path: '/worker',

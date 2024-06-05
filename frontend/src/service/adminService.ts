@@ -76,4 +76,23 @@ export default class adminService {
 
     return true
   }
+  static async downloadMonthlyReport(token: string, year: number, month: number): Promise<any> {
+    try {
+      const response = await fetch('/api/admin/monthly_report', {
+        method: 'POST',
+        headers: {
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ year: year, month: month })
+      })
+      if (response.status != 200) {
+        throw new Error('Download Failed')
+      }
+      return await response.blob()
+    } catch (error) {
+      console.log('/api/admin/monthly_report', error)
+      return null
+    }
+  }
 }
