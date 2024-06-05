@@ -198,7 +198,7 @@ def get_monthly_report():
 
     # geneate monthly report  
     with open(f"monthly_report/{year}_{month}.csv", 'w') as file:
-        file.write("餐廳, 總營收, 訂單總數, 訂單平均價格, 餐廳評分, 餐點平均評分\n")
+        file.write("Restaurant, Total Revenue, Total Orders, Average Order Price, Restaurant Rating, Average Dish Rating\n")
         for row in data:
             file.write(f"{row['restaurant_name']}, {row['total_revenue']}, {row['order_count']}, {row['average_order_price']}, {row['restaurant_rating']}, {row['average_dish_rating']}\n")
     return send_from_directory("monthly_report", f"{year}_{month}.csv", as_attachment=True)
