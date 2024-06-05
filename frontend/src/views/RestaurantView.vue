@@ -14,7 +14,7 @@
         <!-- header -->
         <div class="mt-5 flex flex-row items-center justify-between px-5">
           <div class="text-gray-800">
-            <div class="text-3xl font-bold">{{ restaurantInfo.restaurant }}</div>
+            <!-- <div class="text-3xl font-bold">{{ restaurantInfo.restaurant }}</div> -->
           </div>
         </div>
         <!-- end header -->
