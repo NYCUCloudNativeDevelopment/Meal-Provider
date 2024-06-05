@@ -19,6 +19,7 @@ run this in ./backend/
     - add dish / upload dish picture
     - upload cover picture of a restaurant
     - get monthly report data
+    - get monthly payment report data
     - notify unpaid user
     - get all menu
     - update menu
@@ -349,7 +350,7 @@ run this in ./backend/
 ### get monthly report
 > done
 - endpoint: `/admin/monthly_report`
-- method: `GET`
+- method: `POST`
 - you can only request a monthly report after the whole month ends
 - request: 
 ```
@@ -359,6 +360,21 @@ run this in ./backend/
 }
 ```
 - response: automatically download the csv file
+
+### get monthly payment report
+> done
+- endpoint: `/admin/monthly_payment_report`
+- method: `POST`
+- you can only request a monthly report after the whole month ends
+- request: 
+```
+{
+    "year": ,
+    "month": 
+}
+```
+- response: automatically download the csv file
+
 ### notify unpaid user
 > done
 > how? To be discussed
