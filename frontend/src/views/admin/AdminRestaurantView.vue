@@ -90,11 +90,10 @@ const useRestaurant = useRestaurantStore()
 const userStore = useUserStore()
 const { userInfo } = storeToRefs(userStore)
 const route = useRoute()
-const restaurantId = route.params.id
 const restaurantInfo = ref<restaurant>()
 const restaurantMeals = ref<meal[]>([])
 const addMealDialog = ref(false)
-const { mealInfo } = storeToRefs(useRestaurant)
+const { mealInfo, restaurantId } = storeToRefs(useRestaurant)
 // const addMealDialog = ref(false)
 const showSuccessDialog = ref(false)
 const editMealDialog = ref(false)
@@ -116,7 +115,7 @@ onMounted(async () => {
 
 const getRestaurant = async () => {
   available_dish_id.value = []
-  restaurantInfo.value = await workerService.getRestaurant(userInfo.value.outh_token, restaurantId[0])
+  restaurantInfo.value = await workerService.getRestaurant(userInfo.value.outh_token, restaurantId.value.toString())
   restaurantMeals.value = restaurantInfo.value.meals
   for (let i = 0; i < restaurantMeals.value.length; i++) {
     available_dish_id.value.push(restaurantMeals.value[i].dish_id)
@@ -140,7 +139,7 @@ const addNewMeal = async () => {
 
   // console.log(restaurantId[0])
   console.log(mealInfo.value)
-  mealInfo.value.restaurant_id = restaurantId[0]
+  mealInfo.value.restaurant_id = restaurantId.value.toString()
   if (mealInfo.value.picture === null || 
       mealInfo.value.picture === '' || 
       mealInfo.value.picture === undefined || 

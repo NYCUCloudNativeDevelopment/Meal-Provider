@@ -29,9 +29,6 @@
               type="number"
               min="0"
               placeholder="輸入餐點價錢(必填)"
-        
-
-
             />
           </div>
          
@@ -51,8 +48,9 @@
           </div> -->
           <div class="mb-4">
             <label class="mb-2 block font-bold text-gray-700" for="message"> 照片 </label>
-            <input type="file" id="input" @change="handleFiles" />
+            <input type="file" id="input" @change="handleFiles" accept="image/png, image/gif, image/jpeg" />
           </div>
+          
           <div class="mb-4">
             <!-- <label class="mb-2 block font-bold text-gray-700" for="message"> 餐點描述 </label> -->
             <label class="mb-2 block font-bold text-gray-700" for="message"> 餐點描述 </label>
@@ -64,6 +62,10 @@
               placeholder="餐點描述資訊"
 
             ></textarea>
+          </div>
+          <div class="mb-4">
+            <!-- <label class="mb-2 block font-bold text-gray-700" for="phone"> 餐點價錢 </label> -->
+            <label class="mb-2 block text-red-600 text-center" v-if="checkHasUpload == true"> 有空白處尚未填寫或照片還沒有上傳 </label>
           </div>
           <div class="space-y-2">
             <div aria-hidden="true" class="border-t px-2 dark:border-gray-700"></div>
@@ -102,7 +104,7 @@ import { ref } from 'vue'
 import { useRestaurantStore } from '@/store/restaurant'
 import { storeToRefs } from 'pinia'
 const useRestaurant = useRestaurantStore()
-const { mealInfo } = storeToRefs(useRestaurant)
+const { mealInfo, checkHasUpload } = storeToRefs(useRestaurant)
 
 const handleFiles = async (e: any) => {
   mealInfo.value.picture = e.target.files[0]

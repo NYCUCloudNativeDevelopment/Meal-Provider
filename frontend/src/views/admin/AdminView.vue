@@ -41,7 +41,7 @@
             class="bg-white-100 border-black-800 flex flex-col justify-between rounded-2xl border px-2 py-2 shadow-lg"
             v-for="restaurant in restaurants"
           >
-            <a :href="restaurant.url">
+            <a @click="goToRestaurant(restaurant)">
               <div class="relative">
                 <img
                   class="aspect-[3/2] h-1/2 w-full"
@@ -86,13 +86,13 @@ import userService from '@/service/userService'
 import type { restaurant } from '@/types/worker'
 import { useUserStore } from '@/store/user'
 import router from '@/router'
-import { useRestaurantStore } from '@/store/restaurant'
+import { useRestaurantStore} from '@/store/restaurant'
 import adminService from '@/service/adminService'
 
 const restaurants = ref<restaurant[]>([])
 const addRestaurantDialog = ref(false)
 const { userInfo } = storeToRefs(useUserStore())
-const { restaurantInfo, checkHasUploadRestaurant } = storeToRefs(useRestaurantStore())
+const { restaurantInfo, checkHasUploadRestaurant, restaurantId } = storeToRefs(useRestaurantStore())
 const showWarningDialog = ref(false)
 const timer = ref()
 onMounted(async () => {
@@ -143,6 +143,12 @@ const addRestaurant = async () => {
     picture: null
   }
 }
+
+const goToRestaurant = (restaurant: restaurant) => {
+  restaurantId.value = restaurant.id
+  router.push('/admin/restaurant/' + restaurant.id)
+}
+
 watch(userInfo, () => {
   if (userInfo.value.outh_token === '') {
     showWarningDialog.value = true
