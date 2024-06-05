@@ -1,6 +1,6 @@
 <template>
   <!-- <OrderDetailDialog v-if="historyOrderDialog" @close="close()"></OrderDetailDialog> -->
-  <OrderDetailDialog v-if="historyOrderDialog" @close="close()"></OrderDetailDialog>
+  <OrderDetailDialog :dishes="orderDishes" v-if="historyOrderDialog" @close="close()"></OrderDetailDialog>
   <RateOrderDialog v-if="showDialog" @close="submitReview()"></RateOrderDialog>
   <div class="mx-auto bg-white">
     <div class="flex flex-col-reverse lg:flex-row">
@@ -119,7 +119,7 @@
                   <td class="pl-4">
                     <button
 
-                      @click="historyOrderDialog = true"
+                      @click="historyOrderDialog = true, orderDishes = order.dishes"
                       class="rounded bg-gray-100 px-5 py-3 text-sm leading-none text-gray-600 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-red-300 focus:ring-offset-2"
                     >
                       View
@@ -151,6 +151,7 @@ const historyOrderDialog = ref(false)
 const { userInfo } = storeToRefs(userStore)
 const showDialog = ref(false)
 const { orders, selectIndex, overAllRating } = storeToRefs(orderStore)
+const orderDishes = ref<any[]>([]);
 
 onMounted(async () => {
   const OuthResult = await userService.userCheckOuth()

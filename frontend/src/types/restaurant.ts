@@ -31,9 +31,10 @@ interface order {
   order_time: string
   finish: boolean
   price: number
-  order_dish: {
+  dishes: {
     dish_id: number
     dish_name: string
+    number: number
     price: number
   }[]
 }

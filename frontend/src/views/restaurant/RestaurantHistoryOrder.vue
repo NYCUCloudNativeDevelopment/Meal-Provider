@@ -1,7 +1,7 @@
 <template>
   <!-- component -->
   <successDialog v-if="showDialog" @close="close()" message="Yo have finish these order"></successDialog>
-  <OrderDetailDialog v-if="historyOrderDialog" @close="close()"></OrderDetailDialog>
+  <OrderDetailDialog :dishes="orderDishes" v-if="historyOrderDialog" @close="close()"></OrderDetailDialog>
 
   <!-- <OrderDetailDialog v-if="historyOrderDialog" @close="close()"></OrderDetailDialog> -->
 
@@ -158,7 +158,7 @@
                   </td>
                   <td class="pl-4">
                     <button
-                      @click="historyOrderDialog = true"
+                      @click="historyOrderDialog = true, orderDishes = order.dishes"
 
                       class="rounded bg-gray-100 px-5 py-3 text-sm leading-none text-gray-600 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-red-300 focus:ring-offset-2"
                     >
@@ -205,6 +205,7 @@ const historyOrder = ref<order[]>()
 const showDialog = ref(false)
 const finishOrderList = ref<number[]>([])
 const historyOrderDialog = ref(false)
+const orderDishes = ref<any[]>([]);
 // const historyOrderDialog = ref(false)
 onMounted(async () => {
   historyOrder.value = await restaurantService.getHistoryOrder(userInfo.value.outh_token)

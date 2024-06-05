@@ -6,10 +6,10 @@
       <div class="mx-auto mt-20 max-w-xl overflow-hidden rounded-2xl bg-white shadow-lg">
         <div class="px-6 py-4 text-center text-2xl font-bold uppercase text-gray-600">餐點內容</div>
         <div class="px-6 py-4">
-          <div class="mb-4 flex flex-row items-center justify-between" v-for="(meal, index) in userOrder">
+          <div class="mb-4 flex flex-row items-center justify-between" v-for="(meal, index) in props.dishes">
             <div class="flex w-2/5 flex-row items-center">
-              <img :src="'/api' + meal.picture" class="h-10 w-10 rounded-md object-cover" alt="test" />
-              <span class="ml-4 text-sm font-semibold">{{ meal.name }}</span>
+              <!-- <img :src="'/api' + meal.picture" class="h-10 w-10 rounded-md object-cover" alt="test" /> -->
+              <span class="ml-4 text-sm font-semibold">{{ meal.dish_name }}</span>
             </div>
             <div class="flex w-32 justify-between">
               <span class="select-none px-3 py-1 font-semibold">{{ meal.number }}</span>
@@ -32,7 +32,7 @@
                 </button>
 
                 <button
-                  @click="showTime()"
+                  @click="$emit('close')"
                   class="inline-flex min-h-[2.25rem] items-center justify-center gap-1 rounded-lg border border-transparent bg-red-600 px-4 py-1 text-sm font-medium text-white shadow outline-none transition-colors hover:bg-red-500 focus:bg-red-700 focus:ring-2 focus:ring-inset focus:ring-white focus:ring-offset-2 focus:ring-offset-red-700 dark:focus:ring-offset-0"
                 >
                   <span class="flex items-center gap-1">
@@ -52,19 +52,26 @@
 import { ref } from 'vue'
 import { useRestaurantStore } from '@/store/restaurant'
 import { storeToRefs } from 'pinia'
-const useRestaurant = useRestaurantStore()
-const { restaurantInfo } = storeToRefs(useRestaurant)
-const userOrder = ref([
-  {
-    name: 'test',
-    price: 100,
-    number: 1,
-    picture: '/api/test.jpg'
-  }
-])
-const showTime = () => {
-  console.log(restaurantInfo.value)
-}
+
+const props = defineProps<{
+    dishes: { dish_id: number, dish_name: string, number: number, price: number, rating: number }[]
+}>()
+
+console.log(props.dishes)
+
+// const useRestaurant = useRestaurantStore()
+// const { restaurantInfo } = storeToRefs(useRestaurant)
+// const userOrder = ref([
+//   {
+//     name: 'test',
+//     price: 100,
+//     number: 1,
+//     picture: '/api/test.jpg'
+//   }
+// ])
+// const showTime = () => {
+//   console.log(restaurantInfo.value)
+// }
 </script>
 
 <style></style>
