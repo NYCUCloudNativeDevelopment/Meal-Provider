@@ -48,7 +48,7 @@
       <div
         role="button"
         @click="logout"
-        class="hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:text-blue-gray-900 active:bg-blue-gray-50 active:text-blue-gray-900 absolute bottom-5 flex w-full rounded-lg p-3 text-start leading-tight outline-none transition-all hover:bg-gray-100 hover:bg-opacity-80 focus:bg-opacity-80 active:bg-opacity-80"
+        class="hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:text-blue-gray-900 active:bg-blue-gray-50 active:text-blue-gray-900 flex w-full rounded-lg p-3 text-start leading-tight outline-none transition-all hover:bg-gray-100 hover:bg-opacity-80 focus:bg-opacity-80 active:bg-opacity-80"
       >
         <div class="mr-4 grid">
           <svg
