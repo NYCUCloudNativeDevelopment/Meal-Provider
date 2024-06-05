@@ -298,6 +298,8 @@ const submitUserOrder = () => {
     openErrorDialog()
     return
   }
+  
+  message.value = '訂單已經成功送出去'
   submitOrder.total_price = price.value
   for (let i = 0; i < userOrder.length; i++) {
     submitOrder.dishes.push({
