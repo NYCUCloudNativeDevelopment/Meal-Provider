@@ -103,6 +103,7 @@ run this in ./backend/
                     "dish_id": ,
                     "number": ,
                     "dish_name": ,
+                    "picture": ,
                     "number": ,
                     "price": 
                 },
@@ -253,6 +254,7 @@ run this in ./backend/
                 {
                     "dish_id": ,
                     "dish_name": ,
+                    "picture": ,
                     "number": ,
                     "price": ,
                     "rating": ,

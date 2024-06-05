@@ -42,7 +42,9 @@ def get_order():
         dishes = db.session.query(Order_Dish, Dish_Info) \
             .join(Dish_Info, Order_Dish.DishID == Dish_Info.DishID, isouter=True) \
             .filter(Order_Dish.OrderID == order_id).all()
-        dish_list = [{"dish_id": dish[0].DishID, "dish_name": dish[1].Name, "number": dish[0].Number, "price": dish[1].Price} for dish in dishes]
+        dish_list = [{"dish_id": dish[0].DishID, "dish_name": dish[1].Name, \
+                      "picture": f'/static/dish/{dish[1].Picture}',"number": dish[0].Number, \
+                      "price": dish[1].Price} for dish in dishes]
         # order is a tuple of (Orders, Staff_Info)
         order_list.append({
             'order_id': order[0].OrderID,
