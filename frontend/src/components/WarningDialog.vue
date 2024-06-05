@@ -20,6 +20,7 @@
         >
           <div class="relative rounded-lg bg-white p-4 text-center shadow sm:p-5">
             <button
+              v-if='message != "月底已過，請記得繳費。"'
               type="button"
               class="absolute right-2.5 top-2.5 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
               data-modal-toggle="successModal"
@@ -45,6 +46,7 @@
 
             <p class="mb-4 text-lg font-semibold text-gray-900">{{ message }}</p>
             <button
+              v-if='message != "月底已過，請記得繳費。"'
               @click="$emit('close')"
               type="button"
               class="hover:bg-primary-700 rounded-lg bg-orange-400 px-3 py-2 text-center text-sm font-medium text-white focus:outline-none focus:ring-4"

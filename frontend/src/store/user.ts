@@ -7,7 +7,8 @@ export const useUserStore = defineStore({
     userInfo: {
       outh_token: '',
       user_identity: '',
-      restaurant_id: ''
+      restaurant_id: '',
+      notify: false
     } as user
   }),
   persist: true,

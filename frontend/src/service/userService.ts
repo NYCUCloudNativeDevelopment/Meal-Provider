@@ -12,6 +12,7 @@ export default class userService {
       body: JSON.stringify({ user_account: user_account, user_password: user_password })
     })
     const result = await response.json()
+    console.log(result)
     return result
   }
   static async userLogout(): Promise<void> {

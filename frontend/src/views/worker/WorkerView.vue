@@ -1,5 +1,5 @@
 <template>
-  <WarningDialog v-if="showWarningDialog" message="已成功登出"></WarningDialog>
+  <WarningDialog v-if="showWarningDialog" :message="WarningMessage"></WarningDialog>
   <div class="mx-auto bg-white">
     <div class="flex flex-col-reverse lg:flex-row">
       <WorkerSidebar class="min-h-screen w-full shadow-lg lg:w-1/6"></WorkerSidebar>
@@ -91,12 +91,23 @@ const userStore = useUserStore()
 const { userInfo } = storeToRefs(userStore)
 const timer = ref()
 const restaurants = ref<restaurant[]>([])
-
+const WarningMessage = ref('已成功登出')
 onMounted(async () => {
   const OuthResult = await userService.userCheckOuth()
   if (OuthResult === false) {
     alert('請重新登入')
     router.push('/')
+  }
+  if (userInfo.value.notify == true) {
+    showWarningDialog.value = true
+    WarningMessage.value = '月底已過，請記得繳費。'
+
+    timer.value = setTimeout(() => {
+      showWarningDialog.value = false
+      WarningMessage.value = '已成功登出'
+      userInfo.value.notify = false
+      clearTimeout(timer.value)
+    }, 3000)
   }
   await getRestaurantList()
   for (let i = 0; i < restaurants.value.length; i++) {
