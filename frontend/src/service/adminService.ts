@@ -95,4 +95,46 @@ export default class adminService {
       return null
     }
   }
+  static async updateMealPrice(token: string, mealPrice: any): Promise<boolean> {
+    try {
+      const response = await fetch('/api/admin/update_price', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(mealPrice)
+      })
+      if (response.status != 200) {
+        throw new Error('Permission Denied')
+      }
+      return true
+    }
+    catch (error) {
+      throw error
+    }
+  }
+  static async updateMenu(token: string, menu: any): Promise<boolean> {
+    try { 
+      console.log(menu)
+      const response = await fetch('/api/admin/update_menu', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          available_dish_id: menu
+        
+        })
+      })
+      if (response.status != 200) {
+        throw new Error('Permission Denied')
+      }
+      return true
+    }
+    catch (error) {
+      throw error
+    }
+  }
 }

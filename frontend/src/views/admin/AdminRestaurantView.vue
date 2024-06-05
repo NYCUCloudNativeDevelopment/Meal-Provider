@@ -1,7 +1,9 @@
 <template>
   <WarningDialog v-if="showWarningDialog" message="請重新登入"></WarningDialog>
-  
+  <SuccessDialog v-if="showSuccessDialog" message="刪除成功"></SuccessDialog>
+  <EditMealDialog v-if="editMealDialog" @close="close()" @sub="comfirmUpdateMealPrice()"> </EditMEalDialog>
   <AddMealDialog v-if="addMealDialog" @close="close()" @subm="addNewMeal()"> </AddMealDialog>
+  <DeleteMealDialog v-if="showDeleteDialog" @close="close()" @subm="confirmDeleteMeal"> </DeleteMealDialog>
   <div class="mx-auto bg-white">
     <div class="flex flex-col-reverse gap-4 lg:flex-row">
       <AdminSidebar class="min-h-screen w-full shadow-lg lg:w-1/6"></AdminSidebar>
@@ -48,31 +50,26 @@
               <span class="self-end px-4 text-lg font-bold text-yellow-500">${{ meal.price }}</span>
               <img :src="'/api' + meal.picture" class="mr-4 h-14 w-14 rounded-md object-cover" alt="" />
             </div>
-            <button
-              type="button"
-              class="mx-4 mb-3 inline-flex items-center justify-center rounded-lg border border-orange-400 bg-orange-200 px-5 py-2.5 text-sm font-medium text-black hover:bg-white focus:outline-none focus:ring-4"
-            >
-              <svg
-                class="-ms-2 me-2 h-5 w-5"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                viewBox="0 0 24 24"
+            <div class="px-2 py-4 inline-flex items-center justify-cente">
+              <button
+                @click="deleteMeal(meal)"
+                type="button"
+                class="inline-flex  rounded-lg border border-red-400 bg-red-300 px-10 py-2.5 text-sm font-medium text-black hover:bg-white focus:outline-none focus:ring-4"
               >
-                <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7h-1M8 7h-.688M13 5v4m-2-2h4"
-                />
-              </svg>
-              Edit
-            </button>
+                
+                刪除
+              </button>
+              <button
+                @click="updateMealPrice(meal)"
+                type="button"
+                class="ml-auto mx-4 inline-flex rounded-lg border border-orange-400 bg-orange-200 px-10 py-2.5 text-sm font-medium text-black hover:bg-white focus:outline-none focus:ring-4"
+              >
+                編輯價格
+              </button>
+            </div>
           </div>
         </div>
+        
       </div>
     </div>
   </div>
@@ -99,8 +96,14 @@ const restaurantMeals = ref<meal[]>([])
 const addMealDialog = ref(false)
 const { mealInfo } = storeToRefs(useRestaurant)
 // const addMealDialog = ref(false)
+const showSuccessDialog = ref(false)
+const editMealDialog = ref(false)
+const showDeleteDialog = ref(false)
+const { mealPrice, available_dish_id } = storeToRefs(useRestaurant)
 const showWarningDialog = ref(false)
 const timer = ref()
+
+const currentChoose = ref(0)
 onMounted(async () => {
   const OuthResult = await userService.userCheckOuth()
   if (OuthResult === false) {
@@ -111,11 +114,24 @@ onMounted(async () => {
 })
 
 const getRestaurant = async () => {
+  available_dish_id.value = []
   restaurantInfo.value = await workerService.getRestaurant(userInfo.value.outh_token, restaurantId[0])
   restaurantMeals.value = restaurantInfo.value.meals
+  for (let i = 0; i < restaurantMeals.value.length; i++) {
+    available_dish_id.value.push(restaurantMeals.value[i].dish_id)
+  }
 }
 const close = () => {
   addMealDialog.value = false
+  editMealDialog.value = false
+  showDeleteDialog.value = false
+}
+
+const updateMealPrice = (meal: meal) => {
+  mealPrice.value.dish_id = meal.dish_id
+  mealPrice.value.updated_price = meal.price
+  console.log(mealPrice.value)
+  editMealDialog.value = true
 }
 
 const addNewMeal = async () => {
@@ -128,9 +144,28 @@ const addNewMeal = async () => {
   await getRestaurant()
   addMealDialog.value = false
 }
+
+const comfirmUpdateMealPrice = async () => {
+  await adminService.updateMealPrice(userInfo.value.outh_token, mealPrice.value)
+  await getRestaurant()
+  editMealDialog.value = false
+}
+
+const deleteMeal = (meal: meal) => {
+  showDeleteDialog.value = true
+  currentChoose.value = meal.dish_id
+}
+
+const confirmDeleteMeal = async () => {
+  available_dish_id.value.splice(available_dish_id.value.indexOf(currentChoose.value), 1) 
+  await adminService.updateMenu(userInfo.value.outh_token, available_dish_id.value)
+  await getRestaurant()
+  showDeleteDialog.value = false
+}
 // const close = () => {
 //   addMealDialog.value = false
 // }
+
 watch(userInfo, () => {
   if (userInfo.value.outh_token === '') {
     showWarningDialog.value = true

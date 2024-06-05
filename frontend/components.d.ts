@@ -10,6 +10,8 @@ declare module 'vue' {
     AddMealDialog: typeof import('./src/components/AddMealDialog.vue')['default']
     AddRestaurantDialog: typeof import('./src/components/AddRestaurantDialog.vue')['default']
     AdminSidebar: typeof import('./src/components/AdminSidebar.vue')['default']
+    DeleteMealDialog: typeof import('./src/components/DeleteMealDialog.vue')['default']
+    EditMealDialog: typeof import('./src/components/EditMealDialog.vue')['default']
     ErrorDialog: typeof import('./src/components/ErrorDialog.vue')['default']
     OrderDetailDialog: typeof import('./src/components/OrderDetailDialog.vue')['default']
     RateOrderDialog: typeof import('./src/components/RateOrderDialog.vue')['default']

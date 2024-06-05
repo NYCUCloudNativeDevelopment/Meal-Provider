@@ -21,7 +21,12 @@ export const useRestaurantStore = defineStore({
       picture: null,
       picture_filename: '',
       combo: 0
-    }
+    },
+    mealPrice: {
+      dish_id: 0, 
+      updated_price: 0,
+    },
+    available_dish_id: [] as number[]
   }),
   persist: true
 })
