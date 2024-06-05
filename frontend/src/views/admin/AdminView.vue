@@ -1,5 +1,5 @@
 <template>
-  <WarningDialog v-if="showWarningDialog" message="請重新登入"></WarningDialog>
+  <WarningDialog v-if="showWarningDialog" message="已成功登出"></WarningDialog>
   
   <AddRestaurantDialog v-if="addRestaurantDialog" @close="close()" @sub="addRestaurant()"> </AddRestaurantDialog>
   <div class="mx-auto bg-white">

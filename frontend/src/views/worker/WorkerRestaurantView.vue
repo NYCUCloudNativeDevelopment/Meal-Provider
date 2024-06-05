@@ -1,6 +1,6 @@
 <template>
 
-  <WarningDialog v-if="showWarningDialog" message="請重新登入"></WarningDialog>
+  <WarningDialog v-if="showWarningDialog" message="已成功登出"></WarningDialog>
   <div class="mx-auto bg-white">
     <div class="flex flex-col-reverse lg:flex-row">
       <WorkerSidebar class="min-h-screen w-full shadow-lg lg:w-1/6"></WorkerSidebar>
@@ -27,19 +27,25 @@
             </select>
           </div>
         </div>
-        <div class="mt-5 grid h-1/2 grid-cols-4 gap-4 overflow-y-auto px-5">
+        <div class="mt-5 grid  grid-cols-4 gap-4 h-auto px-5">
           <div
             style="cursor: pointer"
-            class="flex h-1/3 flex-col justify-between rounded-md border bg-white px-1 py-3"
+            class="flex  flex-col justify-between rounded-md border bg-white px-1 py-3"
             v-for="meal in restaurantMeals"
           >
-            <div class="px-2 py-4">
-              <div class="font-bold text-gray-800">{{ meal.name }}</div>
+            <div class="px-4 py-4">
+              <div class="font-bold text-gray-800">餐點名稱: {{ meal.name }}</div>
             </div>
+            <div class="px-4 py-4 flex flex-row items-center justify-between">
+              <div class="font-bold text-gray-800">description: {{ meal.description }}</div>
+            </div>
+
             <div class="flex flex-row items-center justify-between">
               <span class="self-end px-4 text-lg font-bold text-yellow-500">${{ meal.price }}</span>
               <img :src="'/api' + meal.picture" class="mr-4 h-14 w-14 rounded-md object-cover" alt="" />
             </div>
+
+          
             <!-- <button
               type="button"
               class="mx-4 mb-3 inline-flex items-center justify-center rounded-lg border border-orange-400 bg-orange-200 px-5 py-2.5 text-sm font-medium text-black hover:bg-white focus:outline-none focus:ring-4"
@@ -77,16 +83,18 @@ import { storeToRefs } from 'pinia'
 import workerService from '@/service/workerService'
 import userService from '@/service/userService'
 import { useUserStore } from '@/store/user'
+import { useRestaurantStore } from '@/store/restaurant'
 import type { restaurant, meal } from '@/types/worker'
 import router from '@/router'
 
+const useRestaurant = useRestaurantStore()
 const showWarningDialog = ref(false)
 const timer = ref()
 const userStore = useUserStore()
 
+const { restaurantId } = storeToRefs(useRestaurant)
 const { userInfo } = storeToRefs(userStore)
 const route = useRoute()
-const restaurantId = route.params.id
 const restaurantInfo = ref<restaurant>()
 const restaurantMeals = ref<meal[]>([])
 
@@ -101,7 +109,7 @@ onMounted(async () => {
 
 const getRestaurant = async () => {
   console.log('cute')
-  restaurantInfo.value = await workerService.getRestaurant(userInfo.value.outh_token, restaurantId[0])
+  restaurantInfo.value = await workerService.getRestaurant(userInfo.value.outh_token, restaurantId.value.toString())
   restaurantMeals.value = restaurantInfo.value.meals
 }
 

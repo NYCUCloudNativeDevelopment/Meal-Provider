@@ -1,5 +1,5 @@
 <template>
-  <WarningDialog v-if="showWarningDialog" message="請重新登入"></WarningDialog>
+  <WarningDialog v-if="showWarningDialog" message="已成功登出"></WarningDialog>
   <SuccessDialog v-if="showSuccessDialog" message="刪除成功"></SuccessDialog>
   <EditMealDialog v-if="editMealDialog" @close="close()" @sub="comfirmUpdateMealPrice()"> </EditMEalDialog>
   <AddMealDialog v-if="addMealDialog" @close="close()" @subm="addNewMeal()"> </AddMealDialog>
@@ -37,20 +37,20 @@
             <p class="text-lg font-medium leading-none text-gray-700">新增餐點</p>
           </button>
         </div>
-        <div class="mt-5 grid h-3/4 grid-cols-4 gap-4 overflow-y-auto px-5">
+        <div class="mt-5 grid  grid-cols-4 gap-4  px-5">
           <div
             style="cursor: pointer"
-            class="flex h-1/3 flex-col justify-between rounded-md border bg-white px-1 py-3"
+            class="flex h-auto flex-col justify-between rounded-md border bg-white px-1 py-3"
             v-for="meal in restaurantMeals"
           >
-            <div class="px-2 py-4">
+            <div class="px-4 py-4">
               <div class="font-bold text-gray-800">{{ meal.name }}</div>
             </div>
-            <div class="flex flex-row items-center justify-between">
+            <div class="py-4 flex flex-row items-center justify-between">
               <span class="self-end px-4 text-lg font-bold text-yellow-500">${{ meal.price }}</span>
-              <img :src="'/api' + meal.picture" class="mr-4 h-14 w-14 rounded-md object-cover" alt="" />
+              <img :src="'/api' + meal.picture" class="mr-9 h-14 w-14 rounded-md object-cover" alt="" />
             </div>
-            <div class="px-2 py-4 inline-flex items-center justify-cente">
+            <div class="px-4 py-4 inline-flex items-center justify-cente">
               <button
                 @click="deleteMeal(meal)"
                 type="button"

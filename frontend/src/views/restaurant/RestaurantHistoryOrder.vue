@@ -1,6 +1,6 @@
 <template>
   <!-- component -->
-  <WarningDialog v-if="showWarningDialog" message="請重新登入"></WarningDialog>
+  <WarningDialog v-if="showWarningDialog" message="已成功登出"></WarningDialog>
   
   <successDialog v-if="showDialog" @close="close()" message="Yo have finish these order"></successDialog>
   <OrderDetailDialog :dishes="orderDishes" v-if="historyOrderDialog" @close="close()"></OrderDetailDialog>

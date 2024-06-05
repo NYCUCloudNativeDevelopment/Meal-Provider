@@ -1,6 +1,6 @@
 <template>
   <!-- <OrderDetailDialog v-if="historyOrderDialog" @close="close()"></OrderDetailDialog> -->
-  <WarningDialog v-if="showWarningDialog" message="請重新登入"></WarningDialog>
+  <WarningDialog v-if="showWarningDialog" message="已成功登出"></WarningDialog>
   <OrderDetailDialog :dishes="orderDishes" v-if="historyOrderDialog" @close="close()"></OrderDetailDialog>
   <RateOrderDialog v-if="showDialog" @close="submitReview()"></RateOrderDialog>
   <div class="mx-auto bg-white">

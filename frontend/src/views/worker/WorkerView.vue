@@ -1,5 +1,5 @@
 <template>
-  <WarningDialog v-if="showWarningDialog" message="請重新登入"></WarningDialog>
+  <WarningDialog v-if="showWarningDialog" message="已成功登出"></WarningDialog>
   <div class="mx-auto bg-white">
     <div class="flex flex-col-reverse lg:flex-row">
       <WorkerSidebar class="min-h-screen w-full shadow-lg lg:w-1/6"></WorkerSidebar>
@@ -31,7 +31,7 @@
             class="bg-white-100 border-black-800 flex flex-col justify-between rounded-2xl border px-2 py-2 shadow-lg"
             v-for="restaurant in restaurants"
           >
-            <a :href="restaurant.url">
+            <a @click="goToRestaurant(restaurant)">
               <div class="relative">
                 <img
                   class="aspect-[3/2] h-1/2 w-full"
@@ -78,10 +78,13 @@
 import { ref, computed, reactive, onMounted, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import workerService from '@/service/workerService'
+import { useRestaurantStore } from '@/store/restaurant'
 import userService from '@/service/userService'
 import { useUserStore } from '@/store/user'
 import type { restaurant } from '@/types/worker'
 import router from '@/router'
+const useRestaurant = useRestaurantStore()
+const { mealInfo, restaurantId } = storeToRefs(useRestaurant)
 
 const showWarningDialog = ref(false)
 const userStore = useUserStore()
@@ -116,6 +119,11 @@ watch(userInfo, () => {
     }, 1000)
   }
 })
+
+const goToRestaurant = (restaurant: restaurant) => {
+  restaurantId.value = restaurant.id
+  router.push('/worker/restaurant/' + restaurant.id)
+}
 </script>
 
 <style></style>
